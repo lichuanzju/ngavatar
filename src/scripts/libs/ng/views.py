@@ -4,14 +4,36 @@ import sys
 
 class View(object):
 
-    """Abstract View class"""
+    """Empty view that only contains headers"""
 
     headers = { 'Content-Type' : "text/plain" }
 
     def __init__(self, headers = None):
         """Create an empty view with extra headers."""
         if headers:
-            self.headers.update(headers)
+            self._add_headers(headers)
+
+    def _add_headers(self, headers):
+        """Add extra headers to self.headers"""
+        for key, value in headers.items():
+            # If the value is a list, add it to the original list
+            if isinstance(value, list):
+                if key in self.headers:
+                    self.headers[key] = self.headers[key] + value
+                else:
+                    self.headers[key] = value
+            else:
+                self.headers[key] = value
+
+    def add_headers(self, headers):
+        """Add extra headers to this view"""
+        if headers:
+            self._add_headers(headers)
+
+    def remove_header(self, header_name):
+        """Remove the specified header from this view"""
+        if header_name in self.headers:
+            del self.headers[header_name]
 
     def write_to_output(self, out = None):
         """Write this view to output. out is the specified output file.
@@ -20,12 +42,23 @@ class View(object):
         if not out:
             out = sys.stdout
 
-        header_list = ['%s: %s' % (key, value) for key, value in self.headers.items()]
+        # Construct header string
+        header_list = []
+        for key, value in self.headers.items():
+            # If there is multiple values for one key, 
+            # create item for each value
+            if isinstance(value, list):
+                for item in value:
+                    header_list.append('%s: %s' % (key, item))
+            else:
+                header_list.append('%s: %s' % (key, value))
         headers_str = '\r\n'.join(header_list)
 
+        # write header string to output file
         out.write(headers_str)
         out.write('\r\n\r\n')
         out.flush()
+
 
 def test_View():
     print 'Emtpy view:'
@@ -35,8 +68,10 @@ def test_View():
     print 'Header view:'
     header_view = View({
             'Content-Type' : "text/html",
-            'Set-Cookie' : 'ID=1',
+            'Content-Length' : '123',
         })
+    header_view.add_headers({'Set-Cookie' : ['ID=1', 'Session=foo']})
+    header_view.remove_header('Content-Length')
     header_view.write_to_output()
 
     print 'To file:'
