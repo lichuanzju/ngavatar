@@ -123,6 +123,38 @@ class ImageView(View):
         out.flush()
 
 
+class BinaryDataView(View):
+    """View that send a binary file to client"""
+
+    def __init__(self, filepath):
+        """Create a binary data view with path to the binary file"""
+        self.filepath = filepath
+
+        # Get Content-Disposition header from filename
+        filename = os.path.basename(filepath)
+        content_disposition = 'attachment; filename="%s"' % filename
+
+        self.headers = {
+            'Content-Type': 'application/octet-stream',
+            'Content-Disposition': content_disposition,
+        }
+
+    def write_to_output(self, out=None):
+        """Write this binary data view to output
+        If out is not specified, stdout will be used."""
+        if not out:
+            out = sys.stdout
+
+        # Write headers
+        self._write_headers(out)
+
+        # Write binary file
+        with open(self.filepath, 'rb') as binary_file:
+            out.write(binary_file.read())
+
+        out.flush()
+
+
 def test_View():
     print 'Emtpy view:'
     empty_view = View()
@@ -163,7 +195,18 @@ def test_ImageView():
     print "The view has been written to /tmp/imageview"
 
 
+def test_BinaryDataView():
+    print "Binary Data View:"
+
+    binary_view = BinaryDataView('/tmp/data.bin')
+    with open('/tmp/binarydataview', 'wb') as tmp_file:
+        binary_view.write_to_output(tmp_file)
+
+    print "The view has been written to /tmp/binarydataview"
+
+
 if __name__ == '__main__':
     test_View()
     test_StaticView()
     test_ImageView()
+    test_BinaryDataView()
