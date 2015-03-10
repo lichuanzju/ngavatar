@@ -35,13 +35,8 @@ class View(object):
         if header_name in self.headers:
             del self.headers[header_name]
 
-    def write_to_output(self, out=None):
-        """Write this view to output. out is the specified output file.
-        If out is not specified, stdout will be used."""
-        # Use stdout if output file is not specified
-        if not out:
-            out = sys.stdout
-
+    def _write_headers(self, out):
+        """Write headers of this view to output file."""
         # Construct header string
         header_list = []
         for key, value in self.headers.items():
@@ -58,6 +53,15 @@ class View(object):
         out.write(headers_str)
         out.write('\r\n\r\n')
         out.flush()
+
+    def write_to_output(self, out=None):
+        """Write this view to output. out is the specified output file.
+        If out is not specified, stdout will be used."""
+        # Use stdout if output file is not specified
+        if not out:
+            out = sys.stdout
+
+        self._write_headers(out)
 
 
 def test_View():
