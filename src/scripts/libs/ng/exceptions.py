@@ -21,13 +21,15 @@ class FileReadError(NGError):
 class TemplateFormatError(NGError):
     """Exception that is raised when format of a template is illegal."""
 
-    def __init__(self, template_filepath):
+    def __init__(self, template_filepath, reason=None):
         """Create template format error with path to the file."""
         self.template_filepath = template_filepath
+        self.reason = reason
 
     def __str__(self):
         """Return description of this error."""
-        return 'Template file "%s" has bad format' % self.template_filepath
+        return 'Template file "%s" has illegal format: %s'\
+             % (self.template_filepath, self.reason)
 
 
 def test_Exceptions():
