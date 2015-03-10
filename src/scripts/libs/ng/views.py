@@ -63,6 +63,30 @@ class View(object):
         out.flush()
 
 
+class StaticView(View):
+    """View that displays the content of a static html file"""
+
+    def __init__(self, filepath):
+        """Create a static view with path to the html file"""
+        self.headers = {'Content-Type': 'text/html'}
+        self.filepath = filepath
+
+    def write_to_output(self, out=None):
+        """Write headers and content of the static html file to output.
+        If out is not specified, stdout will be used."""
+        if not out:
+            out = sys.stdout
+
+        # Write headers
+        self._write_headers(out)
+
+        # Write content of the static file
+        with open(self.filepath, 'r') as static_file:
+            out.write(static_file.read())
+
+        out.flush()
+
+
 def test_View():
     print 'Emtpy view:'
     empty_view = View()
@@ -81,5 +105,17 @@ def test_View():
     with open('/tmp/view', 'w') as tmp_file:
         header_view.write_to_output(tmp_file)
 
+
+def test_StaticView():
+    print "Static View:"
+
+    with open('/tmp/static.html', 'w') as html_file:
+        html_file.write("<html>\n</html>")
+
+    static_view = StaticView('/tmp/static.html')
+    static_view.write_to_output()
+
+
 if __name__ == '__main__':
     test_View()
+    test_StaticView()
