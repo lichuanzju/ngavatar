@@ -1,6 +1,7 @@
 """Constructor of HTTP response"""
 
 import sys
+import os
 
 
 class View(object):
@@ -87,6 +88,41 @@ class StaticView(View):
         out.flush()
 
 
+class ImageView(View):
+    """View that displays an image"""
+
+    def __init__(self, image_path, image_format=None):
+        """Create an image view with path and format of the image file"""
+        self.filepath = image_path
+
+        if not image_format:
+            file_extension = os.path.splitext(image_path)[1]
+            if not file_extension:
+                file_extension = 'jpeg'
+
+            import _image_extension_to_format
+            image_format = _image_extension_to_format.\
+                image_format_from_extension(file_extension)
+
+        content_type = "image/" + image_format
+        self.headers = {'Content-Type': content_type}
+
+    def write_to_output(self, out=None):
+        """Write this image view to output
+        If out is not specified, stdout will be used."""
+        if not out:
+            out = sys.stdout
+
+        # Write headers
+        self._write_headers(out)
+
+        # Write image file
+        with open(self.filepath, 'rb') as image_file:
+            out.write(image_file.read())
+
+        out.flush()
+
+
 def test_View():
     print 'Emtpy view:'
     empty_view = View()
@@ -104,10 +140,11 @@ def test_View():
     print 'To file:'
     with open('/tmp/view', 'w') as tmp_file:
         header_view.write_to_output(tmp_file)
+    print 'The view has been written to /tmp/view'
 
 
 def test_StaticView():
-    print "Static View:"
+    print 'Static View:'
 
     with open('/tmp/static.html', 'w') as html_file:
         html_file.write("<html>\n</html>")
@@ -116,6 +153,17 @@ def test_StaticView():
     static_view.write_to_output()
 
 
+def test_ImageView():
+    print "Image View:"
+
+    image_view = ImageView('/tmp/image.png')
+    with open('/tmp/imageview', 'wb') as tmp_file:
+        image_view.write_to_output(tmp_file)
+
+    print "The view has been written to /tmp/imageview"
+
+
 if __name__ == '__main__':
     test_View()
     test_StaticView()
+    test_ImageView()
