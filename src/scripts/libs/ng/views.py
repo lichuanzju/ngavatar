@@ -51,7 +51,6 @@ class View(object):
         # write header string to output file
         out.write(headers_str)
         out.write('\r\n\r\n')
-        out.flush()
 
     def write_to_output(self, out=None):
         """Write this view to output. out is the specified output file.
@@ -61,6 +60,7 @@ class View(object):
             out = sys.stdout
 
         self._write_headers(out)
+        out.flush()
 
 
 def test_View():
