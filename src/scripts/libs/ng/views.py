@@ -108,7 +108,7 @@ class ImageView(View):
         self.headers = {'Content-Type': content_type}
 
     def write_to_output(self, out=None):
-        """Write this image view to output
+        """Write this image view to output.
         If out is not specified, stdout will be used."""
         if not out:
             out = sys.stdout
@@ -140,7 +140,7 @@ class BinaryDataView(View):
         }
 
     def write_to_output(self, out=None):
-        """Write this binary data view to output
+        """Write this binary data view to output.
         If out is not specified, stdout will be used."""
         if not out:
             out = sys.stdout
@@ -151,6 +151,34 @@ class BinaryDataView(View):
         # Write binary file
         with open(self.filepath, 'rb') as binary_file:
             out.write(binary_file.read())
+
+        out.flush()
+
+
+class TemplateView(View):
+    """View that displays html loaded from a template"""
+
+    def __init__(self, template_filepath, template_arguments):
+        """Create template view with path to template file
+        and arguments to evaluate template"""
+        self.filepath = template_filepath
+        self.headers = {'Content-Type': 'text/html'}
+        self.template_arguments = template_arguments
+
+    def write_to_output(self, out=None):
+        """Load this template view and write this template view to output.
+        If out is not specified, stdout will be used."""
+        if not out:
+            out = sys.stdout
+
+        # Write headers
+        self._write_headers(out)
+
+        # Load template and write loaded string
+        import _template_loader
+        html_string = _template_loader.load_template(self.filepath,\
+             self.template_arguments)
+        out.write(html_string)
 
         out.flush()
 
@@ -205,8 +233,21 @@ def test_BinaryDataView():
     print "The view has been written to /tmp/binarydataview"
 
 
+def test_TemplateView():
+    print "Template View:"
+
+    template_arguments = {
+        'namespace': 'http://www.w3.org/1999/xhtml',
+        'title': 'ngavatar',
+        'body': '<h2>Welcome</h2>',
+    }
+    template_view = TemplateView('/tmp/template.html', template_arguments)
+    template_view.write_to_output()
+
+
 if __name__ == '__main__':
-    test_View()
-    test_StaticView()
-    test_ImageView()
-    test_BinaryDataView()
+#    test_View()
+#    test_StaticView()
+#    test_ImageView()
+#    test_BinaryDataView()
+     test_TemplateView()
