@@ -6,10 +6,9 @@ import sys
 class View(object):
     """Empty view that only contains headers"""
 
-    headers = {'Content-Type': "text/plain"}
-
     def __init__(self, headers=None):
         """Create an empty view with extra headers."""
+        self.headers = {'Content-Type': "text/plain"}
         if headers:
             self._add_headers(headers)
 
