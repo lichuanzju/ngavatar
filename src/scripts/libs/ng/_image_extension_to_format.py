@@ -13,6 +13,7 @@ _image_formats = {
     '.png': 'png',
 }
 
+
 def image_format_from_extension(extension):
     """Get image format from its extension."""
     if extension in _image_formats:

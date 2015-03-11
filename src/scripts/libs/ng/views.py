@@ -212,8 +212,10 @@ class TemplateView(View):
 
         # Load template
         import _template_loader
-        html_string = _template_loader.load_template(self.filepath,\
-             self.template_arguments)
+        html_string = _template_loader.load_template(
+            self.filepath,
+            self.template_arguments
+        )
 
         # Write html string
         try:
@@ -286,8 +288,8 @@ def test_TemplateView():
 
 
 if __name__ == '__main__':
-#    test_View()
-#    test_StaticView()
-#    test_ImageView()
-#    test_BinaryDataView()
-     test_TemplateView()
+    # test_View()
+    # test_StaticView()
+    # test_ImageView()
+    # test_BinaryDataView()
+    test_TemplateView()

@@ -105,6 +105,7 @@ def load_template(template_filepath, template_args):
     except _TemplateEvalError as eval_error:
         raise TemplateFormatError(template_filepath, str(eval_error))
 
+
 def test_split():
     with open('/tmp/template.html', 'r') as template_file:
         template_string = template_file.read()

@@ -16,8 +16,10 @@ class HttpError(NGError):
     def http_status(self):
         """Return http status description of this error"""
         import _http_status_code
-        return "%d %s" % (self.error_code, \
-            _http_status_code.http_code_description(self.error_code))
+        return "%d %s" % (
+            self.error_code,
+            _http_status_code.http_code_description(self.error_code)
+        )
 
     def __str__(self):
         "Return description of this error."
@@ -75,8 +77,8 @@ class TemplateFormatError(HttpError):
 
     def __str__(self):
         """Return description of this error."""
-        return 'Template file "%s" has illegal format: %s'\
-             % (self.template_filepath, self.reason)
+        return 'Template file "%s" has illegal format: %s' %\
+            (self.template_filepath, self.reason)
 
 
 def test_Exceptions():
