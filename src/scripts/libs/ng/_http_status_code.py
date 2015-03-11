@@ -14,7 +14,7 @@ _http_status_code = {
 
 
 def http_code_description(http_code):
-    """return description of a specified http status code"""
+    """Return description of a specified http status code."""
     if http_code in _http_status_code:
         return _http_status_code[http_code]
     else:

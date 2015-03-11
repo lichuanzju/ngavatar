@@ -1,4 +1,4 @@
-"""Constructor of HTTP response"""
+"""This module defines a series of views that generates HTTP responses."""
 
 import sys
 import os
@@ -9,7 +9,7 @@ from excepts import FileWriteError
 
 
 class View(object):
-    """Empty view that only contains headers"""
+    """Empty view that only contains headers."""
 
     def __init__(self, headers=None):
         """Create an empty view with extra headers."""
@@ -18,7 +18,7 @@ class View(object):
             self._add_headers(headers)
 
     def _add_headers(self, headers):
-        """Add extra headers to self.headers"""
+        """Add extra headers to self.headers."""
         for key, value in headers.items():
             # If the value is a list, add it to the original list
             if isinstance(value, list):
@@ -30,12 +30,12 @@ class View(object):
                 self.headers[key] = value
 
     def add_headers(self, headers):
-        """Add extra headers to this view"""
+        """Add extra headers to this view."""
         if headers:
             self._add_headers(headers)
 
     def remove_header(self, header_name):
-        """Remove the specified header from this view"""
+        """Remove the specified header from this view."""
         if header_name in self.headers:
             del self.headers[header_name]
 
@@ -63,7 +63,7 @@ class View(object):
 
     def _write_file(self, filepath, text_mode, out):
         """Write a file with specified path to output.
-        text_mode should be True if the file is a text file"""
+        text_mode should be True if the file is a text file."""
         # Set file open mode
         if text_mode:
             open_mode = 'r'
@@ -110,10 +110,10 @@ class View(object):
 
 
 class StaticView(View):
-    """View that displays the content of a static html file"""
+    """View that displays the content of a static html file."""
 
     def __init__(self, filepath):
-        """Create a static view with path to the html file"""
+        """Create a static view with path to the html file."""
         self.headers = {'Content-Type': 'text/html'}
         self.filepath = filepath
 
@@ -131,10 +131,10 @@ class StaticView(View):
 
 
 class ImageView(View):
-    """View that displays an image"""
+    """View that displays an image."""
 
     def __init__(self, image_path, image_format=None):
-        """Create an image view with path and format of the image file"""
+        """Create an image view with path and format of the image file."""
         self.filepath = image_path
 
         if not image_format:
@@ -163,10 +163,10 @@ class ImageView(View):
 
 
 class BinaryDataView(View):
-    """View that send a binary file to client"""
+    """View that send a binary file to client."""
 
     def __init__(self, filepath):
-        """Create a binary data view with path to the binary file"""
+        """Create a binary data view with path to the binary file."""
         self.filepath = filepath
 
         # Get Content-Disposition header from filename
@@ -192,11 +192,11 @@ class BinaryDataView(View):
 
 
 class TemplateView(View):
-    """View that displays html loaded from a template"""
+    """View that displays html loaded from a template."""
 
     def __init__(self, template_filepath, template_arguments):
         """Create template view with path to template file
-        and arguments to evaluate template"""
+        and arguments to evaluate template."""
         self.filepath = template_filepath
         self.headers = {'Content-Type': 'text/html'}
         self.template_arguments = template_arguments

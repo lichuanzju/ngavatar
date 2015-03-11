@@ -1,5 +1,5 @@
 """This module defines the utility functions for converting image
-extension to format"""
+extension to format."""
 
 _image_formats = {
     '.bmp': 'bmp',
@@ -14,7 +14,7 @@ _image_formats = {
 }
 
 def image_format_from_extension(extension):
-    """Get image format from its extension"""
+    """Get image format from its extension."""
     if extension in _image_formats:
         return _image_formats[extension]
     else:

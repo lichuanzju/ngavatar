@@ -9,7 +9,7 @@ from excepts import FileReadError
 
 
 class _TemplateSplitError(NGError):
-    """Error that is raised when unable to split template string"""
+    """Error that is raised when unable to split template string."""
 
     def __init__(self, reason):
         """Create template split error with specified reason."""
@@ -21,10 +21,10 @@ class _TemplateSplitError(NGError):
 
 
 class _TemplateEvalError(NGError):
-    """Error that is raised when unable to evaluate template string"""
+    """Error that is raised when unable to evaluate template string."""
 
     def __init__(self, template_string):
-        """Create template eval error with the template string"""
+        """Create template eval error with the template string."""
         self.template_string = template_string
 
     def __str__(self):
@@ -33,7 +33,7 @@ class _TemplateEvalError(NGError):
 
 
 def _split_template(template_string):
-    """Split template content to html parts and python parts"""
+    """Split template content to html parts and python parts."""
     parts = []
 
     length = len(template_string)
@@ -60,7 +60,7 @@ def _split_template(template_string):
 
 
 def _eval_py(py_part, template_args):
-    """Evaluate a python part with specified arguments"""
+    """Evaluate a python part with specified arguments."""
     global_ = template_args
     global_['_result_'] = ''
 
@@ -73,7 +73,7 @@ def _eval_py(py_part, template_args):
 
 
 def _eval_template(template_string, template_args):
-    """Evaluate template string with specified arguments"""
+    """Evaluate template string with specified arguments."""
     parts = _split_template(template_string)
 
     for py_index in range(1, len(parts), 2):
