@@ -68,13 +68,19 @@ class MySQLDatabase(Database):
 
     def _open_connection(self):
         """Open connection to the database."""
-        return MySQLdb.connect(**self.connect_params)
+        try:
+            return MySQLdb.connect(**self.connect_params)
+        except Exception as e:
+            raise DatabaseError(e)
 
     def get_query_result(self, query_sql, args=None):
         """Execute a query statement in MySQL database and return the
         result as tuples."""
-        self.cursor.execute(query_sql, args)
-        return self.cursor.fetchall()
+        try:
+            self.cursor.execute(query_sql, args)
+            return self.cursor.fetchall()
+        except Exception as e:
+            raise DatabaseError(e)
 
     def execute_sql(self, sql, args=None, commit=True):
         """Execute a sql statement in MySQL database and return number
@@ -97,7 +103,10 @@ class MySQLDatabase(Database):
 
     def close(self):
         """Close connection to MySQL database."""
-        self.db.close()
+        try:
+            self.db.close()
+        except Exception as e:
+            raise DatabaseError(e)
 
     def __exit__(self,
                  exception_type, exception_value, exception_traceback):
