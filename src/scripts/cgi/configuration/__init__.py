@@ -22,7 +22,7 @@ class ConfigurationLoadError(HttpError):
 
 
 def _load_configuration(conf_filepath):
-    """Load configuration from file and return it as a dictionary"""
+    """Load configuration from file and return it as a dictionary."""
     global_ = {}
     try:
         execfile(conf_filepath, global_)
@@ -35,7 +35,7 @@ def _load_configuration(conf_filepath):
 # Get absolute path for configuration file
 _conf_relative_filepath = '../../conf/ngavatar.conf'
 _current_path = os.path.dirname(os.path.realpath(__file__))
-_conf_filepath = _current_path + '/' +  _conf_relative_filepath
+_conf_filepath = _current_path + '/' + _conf_relative_filepath
 
 # Set the package global variable
 SITE_CONF = _load_configuration(_conf_filepath)
