@@ -40,8 +40,8 @@ class View(object):
         if header_name in self.headers:
             del self.headers[header_name]
 
-    def _write_headers(self, out):
-        """Write headers of this view to output file."""
+    def _get_header_string(self):
+        """Return the http header of this view."""
         # Construct header string
         header_list = []
         for key, value in self.headers.items():
@@ -54,16 +54,10 @@ class View(object):
                 header_list.append('%s: %s' % (key, value))
         headers_str = '\r\n'.join(header_list)
 
-        # write header string to output file
-        try:
-            out.write(headers_str)
-            out.write('\r\n\r\n')
-            out.flush()
-        except IOError as e:
-            raise FileWriteError(out.name)
+        return headers_str
 
-    def _write_file(self, filepath, text_mode, out):
-        """Write a file with specified path to output.
+    def _render_with_file(self, filepath, text_mode):
+        """Render the body of this view with specified file.
         text_mode should be True if the file is a text file."""
         # Set file open mode
         if text_mode:
@@ -85,29 +79,45 @@ class View(object):
             if input_file:
                 input_file.close()
 
-        # Try to write file
+        return file_content
+
+    def _render_with_text_file(self, filepath):
+        """Render the body of this view with a text file."""
+        return self._render_with_file(filepath, True)
+
+    def _render_with_binary_file(self, filepath):
+        """Render the body of this view with a binary file."""
+        return self._render_with_file(filepath, False)
+
+    def _render_body(self):
+        """Render the body of this view."""
+        return ''
+
+    def render(self):
+        """Render this view. Tuple (header, body) is returned."""
+        body = ''
         try:
-            out.write(file_content)
-            out.flush()
-        except IOError as e:
-            raise FileWriteError(out.name)
+            body = self._render_body()
+        except HttpError as e:
+            self.headers.clear()
+            self.headers['Status'] = e.http_status()
 
-    def _write_text_file(self, filepath, out):
-        """Write a text file with specified path to output."""
-        self._write_file(filepath, True, out)
+        header = self._get_header_string()
 
-    def _write_binary_file(self, filepath, out):
-        """Write a binary file with specified path to output."""
-        self._write_file(filepath, False, out)
+        return header, body
 
     def write_to_output(self, out=None):
-        """Write this view to output. out is the specified output file.
-        If out is not specified, stdout will be used."""
-        # Use stdout if output file is not specified
+        """Write this view to out file. If out file is not specified,
+        stdout is used."""
         if not out:
             out = sys.stdout
 
-        self._write_headers(out)
+        header, body = self.render()
+
+        out.write(header)
+        out.write('\r\n\r\n')
+        out.write(body)
+        out.flush()
 
 
 class StaticView(View):
@@ -118,17 +128,9 @@ class StaticView(View):
         self.headers = {'Content-Type': 'text/html'}
         self.filepath = filepath
 
-    def write_to_output(self, out=None):
-        """Write headers and content of the static html file to output.
-        If out is not specified, stdout will be used."""
-        if not out:
-            out = sys.stdout
-
-        # Write headers
-        self._write_headers(out)
-
-        # Write content of the static file
-        self._write_text_file(self.filepath, out)
+    def _render_body(self):
+        """Render the body of this view with static html file."""
+        return self._render_with_text_file(self.filepath)
 
 
 class ImageView(View):
@@ -150,17 +152,9 @@ class ImageView(View):
         content_type = "image/" + image_format
         self.headers = {'Content-Type': content_type}
 
-    def write_to_output(self, out=None):
-        """Write this image view to output.
-        If out is not specified, stdout will be used."""
-        if not out:
-            out = sys.stdout
-
-        # Write headers
-        self._write_headers(out)
-
-        # Write image file
-        self._write_binary_file(self.filepath, out)
+    def _render_body(self):
+        """Render the body of this view with image file."""
+        return self._render_with_binary_file(self.filepath)
 
 
 class BinaryDataView(View):
@@ -179,17 +173,9 @@ class BinaryDataView(View):
             'Content-Disposition': content_disposition,
         }
 
-    def write_to_output(self, out=None):
-        """Write this binary data view to output.
-        If out is not specified, stdout will be used."""
-        if not out:
-            out = sys.stdout
-
-        # Write headers
-        self._write_headers(out)
-
-        # Write binary file
-        self._write_binary_file(self.filepath, out)
+    def _render_body(self):
+        """Render the body of this view with binary file."""
+        return self._render_with_binary_file(self.filepath)
 
 
 class TemplateFormatError(HttpError):
@@ -217,15 +203,8 @@ class TemplateView(View):
         self.headers = {'Content-Type': 'text/html'}
         self.template_arguments = template_arguments
 
-    def write_to_output(self, out=None):
-        """Load this template view and write this template view to output.
-        If out is not specified, stdout will be used."""
-        if not out:
-            out = sys.stdout
-
-        # Write headers
-        self._write_headers(out)
-
+    def _render_body(self):
+        """Render the body of this view with template file and arguments."""
         # Load template
         import _template_loader
         html_string = _template_loader.load_template(
@@ -233,12 +212,7 @@ class TemplateView(View):
             self.template_arguments
         )
 
-        # Write html string
-        try:
-            out.write(html_string)
-            out.flush()
-        except IOError as e:
-            raise FileWriteError(out.name)
+        return html_string
 
 
 def test_View():
@@ -284,7 +258,7 @@ def test_ImageView():
 def test_BinaryDataView():
     print "Binary Data View:"
 
-    binary_view = BinaryDataView('/tmp/data.bin')
+    binary_view = BinaryDataView('/tmp/image.png')
     with open('/tmp/binarydataview', 'wb') as tmp_file:
         binary_view.write_to_output(tmp_file)
 
@@ -304,8 +278,8 @@ def test_TemplateView():
 
 
 if __name__ == '__main__':
-    # test_View()
-    # test_StaticView()
-    # test_ImageView()
-    # test_BinaryDataView()
+    test_View()
+    test_StaticView()
+    test_ImageView()
+    test_BinaryDataView()
     test_TemplateView()
