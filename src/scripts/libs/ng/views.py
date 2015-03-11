@@ -215,6 +215,21 @@ class TemplateView(View):
         return html_string
 
 
+class StaticErrorView(StaticView):
+    """View that displays http error."""
+
+    def __init__(self, error_code, filepath):
+        """Create static error view with error code and file path."""
+        import _http_status_code
+
+        StaticView.__init__(self, filepath)
+        self.error_code = error_code
+        self.headers['Status'] = '%d %s' % (
+            error_code,
+            _http_status_code.http_code_description(error_code)
+        )
+
+
 def test_View():
     print 'Emtpy view:'
     empty_view = View()
