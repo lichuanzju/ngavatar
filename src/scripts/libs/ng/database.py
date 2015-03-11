@@ -31,9 +31,14 @@ class Database(object):
         pass
 
     @abc.abstractmethod
-    def execute_sql(self, sql, args=None):
+    def execute_sql(self, sql, args=None, commit=True):
         """Abstract method that executes a sql statement
         (INSERT/UPDATE/DELETE)."""
+        pass
+
+    @abc.abstractmethod
+    def commit_transaction(self):
+        """Abstract method that commits the current transaction."""
         pass
 
     @abc.abstractmethod
@@ -71,12 +76,24 @@ class MySQLDatabase(Database):
         self.cursor.execute(query_sql, args)
         return self.cursor.fetchall()
 
-    def execute_sql(self, sql, args=None):
+    def execute_sql(self, sql, args=None, commit=True):
         """Execute a sql statement in MySQL database and return number
         of affected rows."""
-        rows = self.cursor.execute(sql, args)
-        self.db.commit()
-        return rows
+        try:
+            rows = self.cursor.execute(sql, args)
+            if commit:
+                self.db.commit()
+            return rows
+        except Exception as e:
+            self.db.rollback()
+            raise DatabaseError(e)
+
+    def commit_transaction(self):
+        """Commit the current transaction."""
+        try:
+            self.db.commit()
+        except Exception as e:
+            raise DatabaseError(e)
 
     def close(self):
         """Close connection to MySQL database."""
