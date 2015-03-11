@@ -3,9 +3,9 @@
 
 import errno
 from excepts import NGError
-from excepts import TemplateFormatError
 from excepts import FileLocateError
 from excepts import FileReadError
+from views import TemplateFormatError
 
 
 class _TemplateSplitError(NGError):

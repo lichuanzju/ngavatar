@@ -66,21 +66,6 @@ class FileWriteError(HttpError):
         return 'Failed to write file "%s"' % self.filepath
 
 
-class TemplateFormatError(HttpError):
-    """Error that is raised when format of a template is illegal."""
-
-    def __init__(self, template_filepath, reason=None):
-        """Create template format error with path to the file."""
-        HttpError.__init__(self, 500)
-        self.template_filepath = template_filepath
-        self.reason = reason
-
-    def __str__(self):
-        """Return description of this error."""
-        return 'Template file "%s" has illegal format: %s' %\
-            (self.template_filepath, self.reason)
-
-
 def test_Exceptions():
     try:
         raise FileLocateError('/tmp/view')
@@ -97,12 +82,6 @@ def test_Exceptions():
     try:
         raise FileWriteError('/tmp/template.html')
     except FileWriteError as e:
-        print e
-        print e.http_status()
-
-    try:
-        raise TemplateFormatError('/tmp/template.html')
-    except TemplateFormatError as e:
         print e
         print e.http_status()
 

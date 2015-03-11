@@ -3,6 +3,7 @@
 import sys
 import os
 import errno
+from excepts import HttpError
 from excepts import FileLocateError
 from excepts import FileReadError
 from excepts import FileWriteError
@@ -189,6 +190,21 @@ class BinaryDataView(View):
 
         # Write binary file
         self._write_binary_file(self.filepath, out)
+
+
+class TemplateFormatError(HttpError):
+    """Error that is raised when format of a template is illegal."""
+
+    def __init__(self, template_filepath, reason=None):
+        """Create template format error with path to the file."""
+        HttpError.__init__(self, 500)
+        self.template_filepath = template_filepath
+        self.reason = reason
+
+    def __str__(self):
+        """Return description of this error."""
+        return 'Template file "%s" has illegal format: %s' %\
+            (self.template_filepath, self.reason)
 
 
 class TemplateView(View):
