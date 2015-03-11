@@ -25,17 +25,17 @@ class HttpError(NGError):
         return _http_status_code.http_code_description(self.error_code)
 
 
-class FileOpenError(HttpError):
-    """Error that is raised when failed to open a file."""
+class FileLocateError(HttpError):
+    """Error that is raised when failed to locate a file."""
 
     def __init__(self, filepath):
-        """Create file open error with path to the file."""
+        """Create file locate error with path to the file."""
         HttpError.__init__(self, 404)
         self.filepath = filepath
 
     def __str__(self):
         """Return description of this error."""
-        return 'Failed to open file "%s"' % self.filepath
+        return 'Failed to locate file "%s"' % self.filepath
 
 
 class FileReadError(HttpError):
@@ -81,8 +81,8 @@ class TemplateFormatError(HttpError):
 
 def test_Exceptions():
     try:
-        raise FileOpenError('/tmp/view')
-    except FileOpenError as e:
+        raise FileLocateError('/tmp/view')
+    except FileLocateError as e:
         print e
         print e.http_status()
 
