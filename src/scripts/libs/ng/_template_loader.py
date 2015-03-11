@@ -1,8 +1,11 @@
 """This module provides utility functions for loading templates."""
 
 
+import errno
 from excepts import NGError
 from excepts import TemplateFormatError
+from excepts import FileLocateError
+from excepts import FileReadError
 
 
 class _TemplateSplitError(NGError):
@@ -82,8 +85,18 @@ def _eval_template(template_string, template_args):
 def load_template(template_filepath, template_args):
     """Load template file from specified path and
     evaluate it with specified arguments."""
-    with open(template_filepath, 'r') as template_file:
+    template_file = None
+    try:
+        template_file = open(template_filepath, 'r')
         template_content = template_file.read()
+    except IOError as e:
+        if e.errno == errno.ENOENT:
+            raise FileLocateError(template_filepath)
+        else:
+            raise FileReadError(template_filepath)
+    finally:
+        if template_file:
+            template_file.close()
 
     try:
         return _eval_template(template_content, template_args)

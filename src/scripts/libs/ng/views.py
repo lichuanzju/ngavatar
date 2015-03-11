@@ -2,6 +2,10 @@
 
 import sys
 import os
+import errno
+from excepts import FileLocateError
+from excepts import FileReadError
+from excepts import FileWriteError
 
 
 class View(object):
@@ -50,8 +54,50 @@ class View(object):
         headers_str = '\r\n'.join(header_list)
 
         # write header string to output file
-        out.write(headers_str)
-        out.write('\r\n\r\n')
+        try:
+            out.write(headers_str)
+            out.write('\r\n\r\n')
+            out.flush()
+        except IOError as e:
+            raise FileWriteError(out.name)
+
+    def _write_file(self, filepath, text_mode, out):
+        """Write a file with specified path to output.
+        text_mode should be True if the file is a text file"""
+        # Set file open mode
+        if text_mode:
+            open_mode = 'r'
+        else:
+            open_mode = 'rb'
+
+        # Try to read file
+        input_file = None
+        try:
+            input_file = open(filepath, open_mode)
+            file_content = input_file.read()
+        except IOError as e:
+            if e.errno == errno.ENOENT:
+                raise FileLocateError(filepath)
+            else:
+                raise FileReadError(filepath)
+        finally:
+            if input_file:
+                input_file.close()
+
+        # Try to write file
+        try:
+            out.write(file_content)
+            out.flush()
+        except IOError as e:
+            raise FileWriteError(out.name)
+
+    def _write_text_file(self, filepath, out):
+        """Write a text file with specified path to output."""
+        self._write_file(filepath, True, out)
+
+    def _write_binary_file(self, filepath, out):
+        """Write a binary file with specified path to output."""
+        self._write_file(filepath, False, out)
 
     def write_to_output(self, out=None):
         """Write this view to output. out is the specified output file.
@@ -61,7 +107,6 @@ class View(object):
             out = sys.stdout
 
         self._write_headers(out)
-        out.flush()
 
 
 class StaticView(View):
@@ -82,10 +127,7 @@ class StaticView(View):
         self._write_headers(out)
 
         # Write content of the static file
-        with open(self.filepath, 'r') as static_file:
-            out.write(static_file.read())
-
-        out.flush()
+        self._write_text_file(self.filepath, out)
 
 
 class ImageView(View):
@@ -117,10 +159,7 @@ class ImageView(View):
         self._write_headers(out)
 
         # Write image file
-        with open(self.filepath, 'rb') as image_file:
-            out.write(image_file.read())
-
-        out.flush()
+        self._write_binary_file(self.filepath, out)
 
 
 class BinaryDataView(View):
@@ -149,10 +188,7 @@ class BinaryDataView(View):
         self._write_headers(out)
 
         # Write binary file
-        with open(self.filepath, 'rb') as binary_file:
-            out.write(binary_file.read())
-
-        out.flush()
+        self._write_binary_file(self.filepath, out)
 
 
 class TemplateView(View):
@@ -174,13 +210,17 @@ class TemplateView(View):
         # Write headers
         self._write_headers(out)
 
-        # Load template and write loaded string
+        # Load template
         import _template_loader
         html_string = _template_loader.load_template(self.filepath,\
              self.template_arguments)
-        out.write(html_string)
 
-        out.flush()
+        # Write html string
+        try:
+            out.write(html_string)
+            out.flush()
+        except IOError as e:
+            raise FileWriteError(out.name)
 
 
 def test_View():
