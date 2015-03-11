@@ -59,25 +59,27 @@ def _split_template(template_string):
     return parts
 
 
-def _eval_py(py_part, template_args):
-    """Evaluate a python part with specified arguments."""
-    global_ = template_args
-    global_['_result_'] = ''
-
+def _eval_py(py_part, template_variables):
+    """Evaluate a python part with given variables."""
+    template_variables['_result_'] = ''
     try:
-        exec(py_part, global_)
+        exec(py_part, template_variables)
     except:
         raise _TemplateEvalError(py_part)
 
-    return global_['_result_']
+    return template_variables['_result_']
 
 
 def _eval_template(template_string, template_args):
     """Evaluate template string with specified arguments."""
     parts = _split_template(template_string)
 
+    template_variables = {
+        'args': template_args,
+        '_result_': '',
+    }
     for py_index in range(1, len(parts), 2):
-        parts[py_index] = _eval_py(parts[py_index], template_args)
+        parts[py_index] = _eval_py(parts[py_index], template_variables)
 
     return ''.join(parts)
 
