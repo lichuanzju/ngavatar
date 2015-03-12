@@ -5,6 +5,7 @@ stored in the package global variable SITE_CONF"""
 
 import os
 from ng.excepts import HttpError
+from ng.views import StaticErrorView
 
 
 class ConfigurationLoadError(HttpError):
@@ -42,6 +43,14 @@ def static_filepath(static_filename):
     """Return the absolute path to a static file."""
     return os.path.join(SITE_CONF.get('static_path', ''),
                         static_filename)
+
+
+def static_error_view(error_code):
+    """Return view for error pages according to error code."""
+    return StaticErrorView(
+        error_code,
+        static_filepath(SITE_CONF['error_pages'][error_code])
+    )
 
 
 # Get absolute path for configuration file
