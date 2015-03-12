@@ -32,13 +32,13 @@ def _load_configuration(conf_filepath):
     return global_
 
 
-def get_template_filepath(template_filename):
+def template_filepath(template_filename):
     """Return the absolute path to a template file."""
     return os.path.join(SITE_CONF.get('template_path', ''),
                         template_filename)
 
 
-def get_static_filepath(static_filename):
+def static_filepath(static_filename):
     """Return the absolute path to a static file."""
     return os.path.join(SITE_CONF.get('static_path', ''),
                         static_filename)
