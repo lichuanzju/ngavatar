@@ -135,3 +135,25 @@ class DatabaseModel(dict):
         args.append(self._primary_key_value())
 
         return db.execute_sql(sql, args)
+
+    @classmethod
+    def count_in_database(cls, db, **kwargs):
+        """Return number of instances in database."""
+        # Create SELECT statement
+        sql = 'SELECT COUNT(*) FROM %s' % cls._table_name
+        args = []
+
+        # Add WHERE statement
+        added = False
+        for key, value in kwargs.items():
+            # Add conditions of WHERE statement
+            if not added:
+                sql += ' WHERE %s=%%s' % key
+                added = True
+            else:
+                sql += ' AND %s=%%s' % key
+
+            # Add arguments of WHERE statement
+            args.append(value)
+
+        return db.get_query_result(sql, args)[0][0]
