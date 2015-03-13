@@ -333,12 +333,12 @@ class Profile(DatabaseModel):
         updated_cols = []
 
         # Check nickname
-        if nickname != None:
+        if nickname is not None:
             self['nickname'] = nickname
             updated_cols.append('nickname')
 
         # Check sex
-        if sex != None:
+        if sex is not None:
             self['sex'] = sex
             updated_cols.append('sex')
 
