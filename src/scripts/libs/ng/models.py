@@ -3,7 +3,21 @@
 import abc
 import datetime
 from database import Database
+from excepts import HttpError
 import str_generator
+
+
+class ModelError(HttpError):
+    """Error that is raised when failed to process models."""
+
+    def __init__(self, reason):
+        """Create model error with reason of error."""
+        HttpError.__init__(self, 500)
+        self.reason = reason
+
+    def __str__(self):
+        """Return description of this error."""
+        return 'Failed to process model: %s' % self.reason
 
 
 class DatabaseModel(dict):
