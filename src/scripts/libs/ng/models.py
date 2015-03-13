@@ -116,6 +116,31 @@ class DatabaseModel(dict):
 
         return db.execute_sql(sql, args)
 
+    def reload_from_database(self, db, *query_cols):
+        """Reload this instance from database using a query
+        with specified columns. Primary key is used if no columns given"""
+        # Use primary key to query if no column is given
+        if not query_cols:
+            query_cols.append(self.__class__._primary_key())
+
+        # Collect attributes to query this instance with
+        query_conditions = {}
+        for col in query_cols:
+            query_conditions[col] = self[col]
+
+        # Find this instance in database
+        query_result = self.__class__._get_database_query_result(
+            db, **query_conditions)
+
+        # Update value of this instance
+        if len(query_result) == 0:
+            raise ModelError('cannot find instance when reloading model')
+        elif len(query_result) > 1:
+            raise ModelError('mutiple instances found when reloading model')
+        else:
+            for key,value in zip(self.__class__._cols, query_result[0]):
+                self[key] = value
+
     def delete_from_database(self, db):
         """Delete self from database."""
         # Create DELETE statement
