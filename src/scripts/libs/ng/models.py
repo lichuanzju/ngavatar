@@ -237,3 +237,66 @@ class Account(DatabaseModel):
 
         # Write the new password to database
         return self.update_to_database(db, 'passwd_hash', 'salt') == 1
+
+
+class Profile(DatabaseModel):
+    """User profile model."""
+
+    _table_name = 'profile'
+    _cols = [
+        'pid',
+        'owner_id',
+        'nickname',
+        'sex',
+    ]
+    _pk_col_index = 0
+
+    SEX_FEMALE = 0
+    SEX_MALE = 1
+
+    @classmethod
+    def profile_exists(cls, db, owner_account):
+        """Check whether the profile owned by owner_account exists
+        in database."""
+        return cls.count_in_database(db, owner_id=owner_account['uid']) != 0
+
+    @classmethod
+    def create_profile(cls, db, owner_account, nickname=None,
+                       sex=None):
+        """Create a new profile in database and return it."""
+        # Use username as default nickname
+        if not nickname:
+            nickname = owner_account['username']
+
+        # Set male as default sex
+        if not sex:
+            sex = cls.SEX_MALE
+
+        # Create a new profile and store it to database
+        new_profile = Profile(
+            owner_id=owner_account['uid'],
+            nickname=nickname,
+            sex=sex
+        )
+        new_profile.insert_to_database(db)
+
+        # Load the instance from database
+        return Profile.load_from_database(db, owner_id=owner_account['uid'])
+
+    def change_profile(self, db, nickname=None, sex=None):
+        """Change attributes of the profile."""
+        # Collect updated attributes
+        updated_cols = []
+
+        # Check nickname
+        if nickname != None:
+            self['nickname'] = nickname
+            updated_cols.append('nickname')
+
+        # Check sex
+        if sex != None:
+            self['sex'] = sex
+            updated_cols.append('sex')
+
+        # Update data in database
+        return self.update_to_database(db, *updated_cols) == 1
