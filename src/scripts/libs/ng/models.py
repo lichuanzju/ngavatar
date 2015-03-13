@@ -1,7 +1,9 @@
 """This module defines data models."""
 
 import abc
+import datetime
 from database import Database
+import str_generator
 
 
 class DatabaseModel(dict):
@@ -158,3 +160,80 @@ class DatabaseModel(dict):
             args.append(value)
 
         return db.get_query_result(sql, args)[0][0]
+
+
+class Account(DatabaseModel):
+    """User account model."""
+
+    _table_name = 'account'
+    _cols = [
+        'uid',
+        'username',
+        'passwd_hash',
+        'salt',
+        'register_time',
+        'login_time',
+        'state',
+    ]
+    _pk_col_index = 0
+
+    STATE_NORMAL = 0            # Normal state
+
+    @classmethod
+    def username_exists(cls, db, username):
+        """Check where the username exists in the database."""
+        return cls.count_in_database(db, username=username) != 0
+
+    @classmethod
+    def create_account(cls, db, username, password):
+        """Create a new account in database and return it."""
+        # Generate password hash
+        salt = str_generator.random_string(5)
+        password_hash = str_generator.sha1_hexdigest(
+            password + salt,
+            40
+        )
+
+        # Get account creating time
+        now = datetime.datetime.now()
+
+        # Create the account instance and write it to database
+        new_account = Account(
+            username=username,
+            passwd_hash=password_hash,
+            salt=salt,
+            register_time=now,
+            login_time=now,
+            state=cls.STATE_NORMAL
+        )
+        new_account.insert_to_database(db)
+
+        # Load the account instance from database
+        return Account.load_from_database(db, username=username)
+
+    def check_password(self, password):
+        """Check whether password is the correct for this account."""
+        # Generate hash for this password
+        password_hash = str_generator.sha1_hexdigest(
+            password + self['salt'],
+            40
+        )
+
+        # Compare the hash with the one in the database
+        return password_hash == self['passwd_hash']
+
+    def change_password(self, db, new_passwd):
+        """Change password of this account."""
+        # Generate hash for the new password
+        salt = str_generator.random_string(5)
+        password_hash = str_generator.sha1_hexdigest(
+            new_passwd + salt,
+            40
+        )
+
+        # Set the password to instance
+        self['passwd_hash'] = password_hash
+        self['salt'] = salt
+
+        # Write the new password to database
+        return self.update_to_database(db, 'passwd_hash', 'salt') == 1
