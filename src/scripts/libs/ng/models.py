@@ -493,3 +493,55 @@ class Email(DatabaseModel):
             return 0
         else:
             return 4
+
+
+class Session(DatabaseModel):
+    """Model that stores the http session data."""
+
+    _table_name = 'session'
+    _cols = [
+        'sid',
+        'session_key',
+        'data',
+        'expire_time',
+        'creator_ip'
+    ]
+    _pk_col_index = 0
+
+    @classmethod
+    def session_exists(cls, db, session_key):
+        """Check whether the session already exists in database."""
+        return cls.count_in_database(db,
+                                     session_key=session_key) != 0
+
+    @classmethod
+    def create_session(cls, db, session_key, data,
+                       creator_ip, effective_hours=72):
+        """Create session instance in database."""
+        # Get expire time
+        now = datetime.datetime.now()
+        expire_time = now + datetime.timedelta(0, effective_hours * 3600)
+
+        # Create session instance and insert to database
+        new_session = Session(
+            session_key=session_key,
+            data=data,
+            expire_time=expire_time,
+            creator_ip=creator_ip
+        )
+        new_session.insert_to_database(db)
+
+        # Reload the instance from database
+        new_session.reload_from_database(db, 'session_key')
+
+        return new_session
+
+    def renew_session(self, db, effective_hours=72):
+        """Renew this session."""
+        # Get expire time
+        now = datetime.datetime.now()
+        expire_time = now + datetime.timedelta(0, effective_hours * 3600)
+
+        self['expire_time'] = expire_time
+
+        return self.update_to_database(db, 'expire_time') == 1
