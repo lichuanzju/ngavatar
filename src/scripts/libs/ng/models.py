@@ -286,7 +286,7 @@ class Profile(DatabaseModel):
     _table_name = 'profile'
     _cols = [
         'pid',
-        'owner_id',
+        'owner_uid',
         'nickname',
         'sex',
     ]
@@ -299,7 +299,8 @@ class Profile(DatabaseModel):
     def profile_exists(cls, db, owner_account):
         """Check whether the profile owned by owner_account exists
         in database."""
-        return cls.count_in_database(db, owner_id=owner_account['uid']) != 0
+        return cls.count_in_database(db, owner_uid=owner_account['uid']) \
+            != 0
 
     @classmethod
     def create_profile(cls, db, owner_account, nickname=None,
@@ -315,14 +316,14 @@ class Profile(DatabaseModel):
 
         # Create a new profile and store it to database
         new_profile = Profile(
-            owner_id=owner_account['uid'],
+            owner_uid=owner_account['uid'],
             nickname=nickname,
             sex=sex
         )
         new_profile.insert_to_database(db)
 
         # Reload this instance from database
-        new_profile.reload_from_database(db, 'owner_id')
+        new_profile.reload_from_database(db, 'owner_uid')
 
         return new_profile
 
