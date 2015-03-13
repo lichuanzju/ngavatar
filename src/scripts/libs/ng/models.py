@@ -138,7 +138,7 @@ class DatabaseModel(dict):
         elif len(query_result) > 1:
             raise ModelError('mutiple instances found when reloading model')
         else:
-            for key,value in zip(self.__class__._cols, query_result[0]):
+            for key, value in zip(self.__class__._cols, query_result[0]):
                 self[key] = value
 
     def delete_from_database(self, db):
