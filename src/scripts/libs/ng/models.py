@@ -113,8 +113,9 @@ class DatabaseModel(dict):
         """Store self to database by updating all attributes."""
         return self.update_to_database(db, self.__class__._cols)
 
-    def update_to_database(self, db, cols_to_update):
-        """Update self in database. args contains attributes to update."""
+    def update_to_database(self, db, *cols_to_update):
+        """Update self in database.
+        cols_to_update contains attributes to update."""
         # If no column needs to update, return 0
         if not cols_to_update:
             return 0L
