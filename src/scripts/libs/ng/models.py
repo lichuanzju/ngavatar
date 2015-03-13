@@ -344,3 +344,44 @@ class Profile(DatabaseModel):
 
         # Update data in database
         return self.update_to_database(db, *updated_cols) == 1
+
+
+class Avatar(DatabaseModel):
+    """Avatar model."""
+
+    _table_name = 'avatar'
+    _cols = [
+        'aid',
+        'owner_uid',
+        'file_path',
+        'add_time'
+    ]
+    _pk_col_index = 0
+
+    @classmethod
+    def file_path_exists(cls, db, owner_account, file_path):
+        """Check whether the avatar with file_path exists in database."""
+        return Avatar.count_in_database(
+            db,
+            owner_uid=owner_account['uid'],
+            file_path=file_path
+        ) != 0
+
+    @classmethod
+    def create_avatar(cls, db, owner_account, file_path):
+        """Create a new avatar in database."""
+        # Get the adding time
+        now = datetime.datetime.now()
+
+        # Create the instance and insert it to database
+        new_avatar = Avatar(
+            owner_uid=owner_account['uid'],
+            file_path=file_path,
+            add_time=now
+        )
+        new_avatar.insert_to_database(db)
+
+        # Reload the instance from database
+        new_avatar.reload_from_database(db, 'owner_uid', 'file_path')
+
+        return new_avatar
