@@ -247,8 +247,10 @@ class Account(DatabaseModel):
         )
         new_account.insert_to_database(db)
 
-        # Load the account instance from database
-        return Account.load_from_database(db, username=username)
+        # Reload this instance from database
+        new_account.reload_from_database(db, 'username')
+
+        return new_account
 
     def check_password(self, password):
         """Check whether password is the correct for this account."""
@@ -319,8 +321,10 @@ class Profile(DatabaseModel):
         )
         new_profile.insert_to_database(db)
 
-        # Load the instance from database
-        return Profile.load_from_database(db, owner_id=owner_account['uid'])
+        # Reload this instance from database
+        new_profile.reload_from_database(db, 'owner_id')
+
+        return new_profile
 
     def change_profile(self, db, nickname=None, sex=None):
         """Change attributes of the profile."""
