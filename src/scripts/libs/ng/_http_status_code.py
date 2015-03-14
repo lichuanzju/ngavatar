@@ -2,6 +2,8 @@
 
 _http_status_code = {
     200: 'OK',
+    301: 'Moved Permanently',
+    302: 'Found',
     400: 'Bad Request',
     401: 'Unauthorized',
     403: 'Forbidden',
