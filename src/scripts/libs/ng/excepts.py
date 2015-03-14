@@ -1,9 +1,6 @@
 """This module defines exceptions that may be raised in this package."""
 
 
-import http
-
-
 class NGError(Exception):
     """Base class for exceptions in this package."""
     pass
@@ -16,13 +13,9 @@ class HttpError(NGError):
         "Create an http error with http error code."
         self.error_code = error_code
 
-    def http_status(self):
-        """Return http status description of this error"""
-        return http.status_header(self.error_code)
-
     def __str__(self):
         "Return description of this error."
-        return http.status_description(self.error_code)
+        return 'HTTP error with code %d' % self.error_code
 
 
 class FileLocateError(HttpError):
@@ -69,19 +62,16 @@ def test_Exceptions():
         raise FileLocateError('/tmp/view')
     except FileLocateError as e:
         print e
-        print e.http_status()
 
     try:
         raise FileReadError('/tmp/template.html')
     except FileReadError as e:
         print e
-        print e.http_status()
 
     try:
         raise FileWriteError('/tmp/template.html')
     except FileWriteError as e:
         print e
-        print e.http_status()
 
 
 if __name__ == '__main__':
