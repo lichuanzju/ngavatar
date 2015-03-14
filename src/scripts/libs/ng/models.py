@@ -525,7 +525,7 @@ class Session(DatabaseModel):
         # Create session instance and insert to database
         new_session = Session(
             session_key=session_key,
-            data=data,
+            data=str(data),
             expire_time=expire_time,
             creator_ip=creator_ip
         )
@@ -536,6 +536,15 @@ class Session(DatabaseModel):
 
         return new_session
 
+    def __init__(self, *args, **kwargs):
+        """Create session instance with the same parameters as dict."""
+        DatabaseModel.__init__(self, *args, **kwargs)
+
+        if 'data' in self:
+            self._parse_data()
+        else:
+            self.data_attributes = {}
+
     def renew_session(self, db, effective_hours=72):
         """Renew this session."""
         # Get expire time
@@ -545,3 +554,33 @@ class Session(DatabaseModel):
         self['expire_time'] = expire_time
 
         return self.update_to_database(db, 'expire_time') == 1
+
+    def _parse_data(self):
+        """Parse data to attributes."""
+        self.data_attributes = eval(DatabaseModel.__getitem__(self, 'data'))
+
+    def _serilize_data_attributes(self):
+        """Serilize attributes to data."""
+        DatabaseModel.__setitem__(self, 'data', str(self.data_attributes))
+
+    def __setitem__(self, key, value):
+        """Set the value of the item with key. If the key is 'data',
+        self.attributes will be changed."""
+        DatabaseModel.__setitem__(self, key, value)
+
+        if key == 'data':
+            self._parse_data()
+
+    def get_data_attribute(self, attribute_name, default=None):
+        """Read attribute from session data."""
+        return self.data_attributes.get(attribute_name, default)
+
+    def set_data_attribute(self, attribute_name, attribute_value):
+        """Write attribute to session data. A call to store_session_data()
+        is needed if you want to store written attributes to database."""
+        self.data_attributes[attribute_name] = attribute_value
+
+    def store_session_data(self, db):
+        """Store session data to database."""
+        self._serilize_data_attributes()
+        return self.update_to_database(db, 'data')
