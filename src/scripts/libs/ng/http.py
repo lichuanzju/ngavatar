@@ -1,6 +1,7 @@
 """This module defines classes directly related HTTP request processing."""
 
 
+import sys
 import datetime
 
 
@@ -28,7 +29,6 @@ class HttpCookie(object):
 
         # Cookie send by client only contains data fields
         return cls(data, None, None)
-
 
     def __init__(self, data, path, expires,
                  domain=None, secure=False, httponly=False):
@@ -116,3 +116,49 @@ class HttpRequest(object):
 
         # Get field storage passed by cgi
         self.field_storage = field_storage
+
+
+class HttpResponse(object):
+    """HTTP response class that stores information of server response."""
+
+    def __init__(self, view, **headers):
+        """Create HTTP response with its view."""
+        self.view = view
+        self.headers = headers
+
+        if 'Content-Type' not in self.headers:
+            if self.view is not None:
+                self.headers['Content-Type'] = self.view.content_type
+            else:
+                self.headers['Content-Type'] = 'text/html'
+
+    def add_headers(self, headers):
+        """Add extra headers to this response."""
+        self.headers.update(headers)
+
+    def remove_header(self, header_name):
+        """Remove the specified header from this response."""
+        if header_name in self.headers:
+            del self.headers[header_name]
+
+    def _get_header_string(self):
+        """Return the http header of this response."""
+        # Construct header string
+        header_list = []
+        for key, value in self.headers.items():
+            header_list.append('%s: %s' % (key, value))
+
+        return '\r\n'.join(header_list)
+
+    def write_to_output(self, out=None):
+        """Write this response to out. If out is None or not presented,
+        stdout will be used instead."""
+        if out is None:
+            out = sys.stdout
+
+        out.write(self._get_header_string())
+        out.write('\r\n\r\n')
+        out.flush()
+
+        if self.view is not None:
+            self.view.write_to_output(out)
