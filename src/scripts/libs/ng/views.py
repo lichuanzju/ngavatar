@@ -227,6 +227,21 @@ class StaticErrorView(StaticView):
         self.headers['Status'] = _http_status_code.\
             code_status(error_code)
 
+class RedirectView(View):
+    """View that redirects the request."""
+
+    def __init__(self, redirect_location):
+        """Create redirect view with location to redirect to."""
+        import _http_status_code
+
+        headers = {
+            'Content-Type': 'text/html',
+            'Status': _http_status_code.code_status(302),
+            'Location': redirect_location,
+        }
+        View.__init__(self, headers)
+        self.location = redirect_location
+
 
 def test_View():
     print 'Emtpy view:'
