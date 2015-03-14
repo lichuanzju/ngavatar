@@ -1,4 +1,5 @@
-"""This module defines a series of views that generates HTTP responses."""
+"""This module defines a series of view classes that generates the body
+of HTTP responses."""
 
 import sys
 import os
@@ -10,51 +11,14 @@ from excepts import FileWriteError
 
 
 class View(object):
-    """Empty view that only contains headers."""
+    """Empty view."""
 
-    def __init__(self, headers=None):
-        """Create an empty view with extra headers."""
-        self.headers = {'Content-Type': "text/plain"}
-        if headers:
-            self._add_headers(headers)
-
-    def _add_headers(self, headers):
-        """Add extra headers to self.headers."""
-        for key, value in headers.items():
-            # If the value is a list, add it to the original list
-            if isinstance(value, list):
-                if key in self.headers:
-                    self.headers[key] = self.headers[key] + value
-                else:
-                    self.headers[key] = value
-            else:
-                self.headers[key] = value
-
-    def add_headers(self, headers):
-        """Add extra headers to this view."""
-        if headers:
-            self._add_headers(headers)
-
-    def remove_header(self, header_name):
-        """Remove the specified header from this view."""
-        if header_name in self.headers:
-            del self.headers[header_name]
-
-    def _get_header_string(self):
-        """Return the http header of this view."""
-        # Construct header string
-        header_list = []
-        for key, value in self.headers.items():
-            # If there is multiple values for one key,
-            # create item for each value
-            if isinstance(value, list):
-                for item in value:
-                    header_list.append('%s: %s' % (key, item))
-            else:
-                header_list.append('%s: %s' % (key, value))
-        headers_str = '\r\n'.join(header_list)
-
-        return headers_str
+    def __init__(self, content_type=None):
+        """Create a view with content type."""
+        if content_type is None:
+            self.content_type = 'text/plain'
+        else:
+            self.content_type = content_type
 
     def _render_with_file(self, filepath, text_mode):
         """Render the body of this view with specified file.
@@ -93,29 +57,14 @@ class View(object):
         """Render the body of this view."""
         return ''
 
-    def render(self):
-        """Render this view. Tuple (header, body) is returned."""
-        body = ''
-        try:
-            body = self._render_body()
-        except HttpError as e:
-            self.headers.clear()
-            self.headers['Status'] = e.http_status()
-
-        header = self._get_header_string()
-
-        return header, body
-
     def write_to_output(self, out=None):
         """Write this view to out file. If out file is not specified,
         stdout is used."""
-        if not out:
+        if out is None:
             out = sys.stdout
 
-        header, body = self.render()
+        body = self._render_body()
 
-        out.write(header)
-        out.write('\r\n\r\n')
         out.write(body)
         out.flush()
 
@@ -125,7 +74,7 @@ class StaticView(View):
 
     def __init__(self, filepath):
         """Create a static view with path to the html file."""
-        self.headers = {'Content-Type': 'text/html'}
+        View.__init__(self, 'text/html')
         self.filepath = filepath
 
     def _render_body(self):
@@ -138,8 +87,7 @@ class ImageView(View):
 
     def __init__(self, image_path, image_format=None):
         """Create an image view with path and format of the image file."""
-        self.filepath = image_path
-
+        # Get image format from path if not given
         if not image_format:
             file_extension = os.path.splitext(image_path)[1]
             if not file_extension:
@@ -150,7 +98,9 @@ class ImageView(View):
                 image_format_from_extension(file_extension)
 
         content_type = "image/" + image_format
-        self.headers = {'Content-Type': content_type}
+
+        View.__init__(self, content_type)
+        self.filepath = image_path
 
     def _render_body(self):
         """Render the body of this view with image file."""
@@ -162,16 +112,12 @@ class BinaryDataView(View):
 
     def __init__(self, filepath):
         """Create a binary data view with path to the binary file."""
+        View.__init__(self, 'application/octet-stream')
         self.filepath = filepath
 
         # Get Content-Disposition header from filename
         filename = os.path.basename(filepath)
-        content_disposition = 'attachment; filename="%s"' % filename
-
-        self.headers = {
-            'Content-Type': 'application/octet-stream',
-            'Content-Disposition': content_disposition,
-        }
+        self.content_disposition = 'attachment; filename="%s"' % filename
 
     def _render_body(self):
         """Render the body of this view with binary file."""
@@ -199,8 +145,8 @@ class TemplateView(View):
     def __init__(self, template_filepath, template_arguments):
         """Create template view with path to template file
         and arguments to evaluate template."""
+        View.__init__(self, 'text/html')
         self.filepath = template_filepath
-        self.headers = {'Content-Type': 'text/html'}
         self.template_arguments = template_arguments
 
     def _render_body(self):
@@ -215,51 +161,14 @@ class TemplateView(View):
         return html_string
 
 
-class StaticErrorView(StaticView):
-    """View that displays http error."""
-
-    def __init__(self, error_code, filepath):
-        """Create static error view with error code and file path."""
-        import _http_status_code
-
-        StaticView.__init__(self, filepath)
-        self.error_code = error_code
-        self.headers['Status'] = _http_status_code.\
-            code_status(error_code)
-
-class RedirectView(View):
-    """View that redirects the request."""
-
-    def __init__(self, redirect_location):
-        """Create redirect view with location to redirect to."""
-        import _http_status_code
-
-        headers = {
-            'Content-Type': 'text/html',
-            'Status': _http_status_code.code_status(302),
-            'Location': redirect_location,
-        }
-        View.__init__(self, headers)
-        self.location = redirect_location
-
-
 def test_View():
     print 'Emtpy view:'
     empty_view = View()
     empty_view.write_to_output()
 
-    print 'Header view:'
-    header_view = View({
-            'Content-Type': "text/html",
-            'Content-Length': '123',
-        })
-    header_view.add_headers({'Set-Cookie': ['ID=1', 'Session=foo']})
-    header_view.remove_header('Content-Length')
-    header_view.write_to_output()
-
     print 'To file:'
     with open('/tmp/view', 'w') as tmp_file:
-        header_view.write_to_output(tmp_file)
+        empty_view.write_to_output(tmp_file)
     print 'The view has been written to /tmp/view'
 
 
