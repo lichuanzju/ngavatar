@@ -1,6 +1,9 @@
 """This module defines exceptions that may be raised in this package."""
 
 
+import http
+
+
 class NGError(Exception):
     """Base class for exceptions in this package."""
     pass
@@ -15,13 +18,11 @@ class HttpError(NGError):
 
     def http_status(self):
         """Return http status description of this error"""
-        import _http_status_code
-        return _http_status_code.code_status(self.error_code)
+        return http.status_header(self.error_code)
 
     def __str__(self):
         "Return description of this error."
-        import _http_status_code
-        return _http_status_code.code_description(self.error_code)
+        return http.status_description(self.error_code)
 
 
 class FileLocateError(HttpError):

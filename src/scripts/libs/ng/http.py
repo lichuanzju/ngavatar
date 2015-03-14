@@ -5,6 +5,32 @@ import sys
 import datetime
 
 
+# Status codes and their description
+_http_status_description = {
+    200: 'OK',
+    301: 'Moved Permanently',
+    302: 'Found',
+    400: 'Bad Request',
+    401: 'Unauthorized',
+    403: 'Forbidden',
+    404: 'Not Found',
+    405: 'Method Not Allowed',
+    406: 'Not Acceptable',
+    500: 'Internal Server Error',
+    501: 'Not Implemented',
+}
+
+
+def status_description(status_code):
+    """Return description of a specified http status code."""
+    return _http_status_description.get(status_code, 'Unknow Status')
+
+
+def status_header(status_code):
+    """Return the status header of the code."""
+    return '%d %s' % (status_code, status_description(status_code))
+
+
 class HttpCookie(object):
     """Class that represent HTTP cookies."""
 
