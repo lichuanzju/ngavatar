@@ -13,7 +13,7 @@ _http_status_code = {
 }
 
 
-def http_code_description(http_code):
+def code_description(http_code):
     """Return description of a specified http status code."""
     if http_code in _http_status_code:
         return _http_status_code[http_code]
@@ -21,9 +21,14 @@ def http_code_description(http_code):
         return 'Unknown Status Code'
 
 
+def code_status(http_code):
+    """Return the status header of the code."""
+    return '%d %s' % (http_code, code_description(http_code))
+
+
 def test():
-    print http_code_description(404)
-    print http_code_description(100)
+    print code_description(404)
+    print code_description(100)
 
 
 if __name__ == '__main__':

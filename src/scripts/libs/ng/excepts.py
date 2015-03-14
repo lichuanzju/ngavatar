@@ -16,15 +16,12 @@ class HttpError(NGError):
     def http_status(self):
         """Return http status description of this error"""
         import _http_status_code
-        return "%d %s" % (
-            self.error_code,
-            _http_status_code.http_code_description(self.error_code)
-        )
+        return _http_status_code.code_status(self.error_code)
 
     def __str__(self):
         "Return description of this error."
         import _http_status_code
-        return _http_status_code.http_code_description(self.error_code)
+        return _http_status_code.code_description(self.error_code)
 
 
 class FileLocateError(HttpError):

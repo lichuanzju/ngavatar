@@ -224,10 +224,8 @@ class StaticErrorView(StaticView):
 
         StaticView.__init__(self, filepath)
         self.error_code = error_code
-        self.headers['Status'] = '%d %s' % (
-            error_code,
-            _http_status_code.http_code_description(error_code)
-        )
+        self.headers['Status'] = _http_status_code.\
+            code_status(error_code)
 
 
 def test_View():
