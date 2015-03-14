@@ -10,17 +10,17 @@ class HttpSession(object):
 
     __metaclass__ = abc.ABCMeta
 
-    @abc.abstractmethod
     @classmethod
-    def create_session(cls, client_ip, effective_hours, **data_kwargs):
+    @abc.abstractmethod
+    def create_session(cls, storage, data, client_ip, effective_hours):
         """Create a new session. client_ip specifies the IP address of the
         HTTP client. effective_hours specifies effective time in hours.
-        data_kwargs collects the data to store in the session."""
+        data collects the data to store in the session."""
         pass
 
-    @abc.abstractmethod
     @classmethod
-    def load_session(cls, session_key):
+    @abc.abstractmethod
+    def load_session(cls, storage, session_key):
         """Load the session with specified session key."""
         pass
 
@@ -30,8 +30,13 @@ class HttpSession(object):
         pass
 
     @abc.abstractmethod
-    def get_attribute(self, attribute_name):
+    def get_attribute(self, attribute_name, default=None):
         """Get attribute stored in this session with specified name."""
+        pass
+
+    @abc.abstractmethod
+    def set_attribute(self, attribute_name, attribute_value):
+        """Set the value of attribute with specified name."""
         pass
 
     @abc.abstractmethod
