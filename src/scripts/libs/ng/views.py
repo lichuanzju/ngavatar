@@ -131,7 +131,7 @@ class TemplateFormatError(HttpError):
         """Create template format error with path to the file."""
         HttpError.__init__(self, 500)
         self.template_filepath = template_filepath
-        self.reason = reason
+        self.reason = str(reason)
 
     def __str__(self):
         """Return description of this error."""
@@ -153,12 +153,18 @@ class TemplateView(View):
         """Render the body of this view with template file and arguments."""
         # Load template
         import _template_loader
-        html_string = _template_loader.load_template(
-            self.filepath,
-            self.template_arguments
-        )
 
-        return html_string
+        try:
+            html_string = _template_loader.load_template(
+                self.filepath,
+                self.template_arguments
+            )
+
+            return html_string
+        except _template_loader.TemplateSplitError as e:
+            raise TemplateFormatError(self.filepath, e)
+        except _template_loader.TemplateEvalError as e:
+            raise TemplateFormatError(self.filepath, e)
 
 
 def test_View():

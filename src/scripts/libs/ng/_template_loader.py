@@ -5,22 +5,21 @@ import errno
 from excepts import NGError
 from excepts import FileLocateError
 from excepts import FileReadError
-from views import TemplateFormatError
 
 
-class _TemplateSplitError(NGError):
+class TemplateSplitError(NGError):
     """Error that is raised when unable to split template string."""
 
     def __init__(self, reason):
         """Create template split error with specified reason."""
-        self.reason = reason
+        self.reason = str(reason)
 
     def __str__(self):
         """Return description of this error."""
-        return str(self.reason)
+        return self.reason
 
 
-class _TemplateEvalError(NGError):
+class TemplateEvalError(NGError):
     """Error that is raised when unable to evaluate template string."""
 
     def __init__(self, template_string):
@@ -49,7 +48,7 @@ def _split_template(template_string):
 
         py_end = template_string.find('%}', py_start + 2)
         if py_end < 0:
-            raise _TemplateSplitError('Tags don\'t match')
+            raise TemplateSplitError('Tags don\'t match')
 
         parts.append(template_string[start:py_start])
         parts.append(template_string[(py_start + 2):py_end].strip())
@@ -65,7 +64,7 @@ def _eval_py(py_part, template_variables):
     try:
         exec(py_part, template_variables)
     except:
-        raise _TemplateEvalError(py_part)
+        raise TemplateEvalError(py_part)
 
     return str(template_variables['_result_'])
 
@@ -100,12 +99,7 @@ def load_template(template_filepath, template_args):
         if template_file:
             template_file.close()
 
-    try:
-        return _eval_template(template_content, template_args)
-    except _TemplateSplitError as split_error:
-        raise TemplateFormatError(template_filepath, split_error.reason)
-    except _TemplateEvalError as eval_error:
-        raise TemplateFormatError(template_filepath, str(eval_error))
+    return _eval_template(template_content, template_args)
 
 
 def test_split():
@@ -114,7 +108,7 @@ def test_split():
 
     try:
         print _split_template(template_string)
-    except _TemplateSplitError as e:
+    except TemplateSplitError as e:
         print e
 
 
