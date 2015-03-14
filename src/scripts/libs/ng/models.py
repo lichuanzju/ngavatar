@@ -98,7 +98,10 @@ class DatabaseModel(dict):
 
     def _primary_key_value(self):
         """Return the value of the primary key of this instance."""
-        return self[self.__class__._primary_key()]
+        if self.__class__._primary_key() in self:
+            return self[self.__class__._primary_key()]
+        else:
+            raise ModelError('Trying to read primary key before setting it')
 
     def insert_to_database(self, db):
         """Insert self to database."""
