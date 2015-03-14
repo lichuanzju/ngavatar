@@ -188,3 +188,13 @@ class HttpResponse(object):
 
         if self.view is not None:
             self.view.write_to_output(out)
+
+
+class HttpRedirectResponse(HttpResponse):
+    """The HTTP response that redirects the request."""
+
+    def __init__(self, redirect_location):
+        """Create redirect response with the redirecting location."""
+        HttpResponse.__init__(self, None)
+        self.headers['Status'] = status_header(302)
+        self.headers['Location'] = redirect_location
