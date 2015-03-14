@@ -494,6 +494,15 @@ class Email(DatabaseModel):
         else:
             return 4
 
+    def avatar_alreadyset(self):
+        """Check whether the avatar is already set to this email."""
+        return self['avatar_id'] is not None
+
+    def set_avatar(self, db, avatar):
+        """Set the avatar to this email."""
+        self['avatar_id'] = avatar['aid']
+        return self.update_to_database(db, 'avatar_id') == 1
+
 
 class Session(DatabaseModel):
     """Model that stores the http session data."""
