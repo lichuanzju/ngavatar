@@ -67,7 +67,7 @@ def _eval_py(py_part, template_variables):
     except:
         raise _TemplateEvalError(py_part)
 
-    return template_variables['_result_']
+    return str(template_variables['_result_'])
 
 
 def _eval_template(template_string, template_args):
