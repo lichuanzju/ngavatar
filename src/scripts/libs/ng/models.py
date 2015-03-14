@@ -545,6 +545,10 @@ class Session(DatabaseModel):
         else:
             self.data_attributes = {}
 
+    def session_expired(self):
+        """Check whether this session is expired."""
+        return self['expire_time'] < datetime.datetime.now()
+
     def renew_session(self, db, effective_hours=72):
         """Renew this session."""
         # Get expire time
