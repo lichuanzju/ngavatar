@@ -198,3 +198,13 @@ class HttpRedirectResponse(HttpResponse):
         HttpResponse.__init__(self, None)
         self.headers['Status'] = status_header(302)
         self.headers['Location'] = redirect_location
+
+
+class HttpErrorResponse(HttpResponse):
+    """The HTTP response that indicates an HTTP error."""
+
+    def __init__(self, error_code, error_view):
+        """Create error response with error code and path to error page."""
+        HttpResponse.__init__(self,
+                              error_view,
+                              Status=status_header(error_code))
