@@ -93,9 +93,9 @@ class ImageView(View):
             if not file_extension:
                 file_extension = 'jpeg'
 
-            import _image_extension_to_format
-            image_format = _image_extension_to_format.\
-                image_format_from_extension(file_extension)
+            import _image_format
+            image_format = _image_format.\
+                format_from_extension(file_extension)
 
         content_type = "image/" + image_format
 
