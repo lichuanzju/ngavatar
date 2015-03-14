@@ -112,12 +112,7 @@ class MySQLDatabase(Database):
                  exception_type, exception_value, exception_traceback):
         """Method that is called when exiting context."""
         self.close()
-
-        # Pass DatabaseError instead of other errors
-        if exception_type == DatabaseError:
-            return False
-        elif exception_type:
-            raise DatabaseError(exception_value)
+        return False
 
 
 def test():
