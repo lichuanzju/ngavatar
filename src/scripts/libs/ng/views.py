@@ -1,9 +1,10 @@
 """This module defines a series of view classes that generates the body
 of HTTP responses."""
 
-import sys
-import os
 import errno
+import mimetypes
+import os
+import sys
 from excepts import HttpError
 from excepts import FileLocateError
 from excepts import FileReadError
@@ -89,15 +90,9 @@ class ImageView(View):
         """Create an image view with path and format of the image file."""
         # Get image format from path if not given
         if not image_format:
-            file_extension = os.path.splitext(image_path)[1]
-            if not file_extension:
-                file_extension = 'jpeg'
-
-            import _image_format
-            image_format = _image_format.\
-                format_from_extension(file_extension)
-
-        content_type = "image/" + image_format
+            content_type, _ = mimetypes.guess_type(image_path)
+        else:
+            content_type = "image/" + image_format
 
         View.__init__(self, content_type)
         self.filepath = image_path
@@ -110,9 +105,13 @@ class ImageView(View):
 class BinaryDataView(View):
     """View that send a binary file to client."""
 
-    def __init__(self, filepath):
-        """Create a binary data view with path to the binary file."""
-        View.__init__(self, 'application/octet-stream')
+    def __init__(self, filepath, content_type=None):
+        """Create binary data view with file path and content type."""
+        # Guess content type if not given
+        if not content_type:
+            content_type = mimetypes.guess_type(filepath)
+
+        View.__init__(self, content_type)
         self.filepath = filepath
 
         # Get Content-Disposition header from filename
