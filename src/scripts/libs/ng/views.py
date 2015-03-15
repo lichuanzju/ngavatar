@@ -16,8 +16,8 @@ class View(object):
 
     def __init__(self, content_type=None):
         """Create a view with content type."""
-        if content_type is None:
-            self.content_type = 'text/plain'
+        if not content_type:
+            self.content_type = 'application/octet-stream'
         else:
             self.content_type = content_type
 
