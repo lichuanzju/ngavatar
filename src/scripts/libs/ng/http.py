@@ -122,6 +122,7 @@ class HttpRequest(object):
         # Get request parameters
         self.method = environ.get('REQUEST_METHOD')
         self.uri = environ.get('REQUEST_URI')
+        self.script_name = environ.get('SCRIPT_NAME', '')
         self.client_addr = environ.get('REMOTE_ADDR')
         self.useragent = environ.get('HTTP_USER_AGENT')
         self.connection = environ.get('HTTP_CONNECTION')
