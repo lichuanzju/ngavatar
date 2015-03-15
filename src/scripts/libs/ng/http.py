@@ -185,15 +185,22 @@ class HttpResponse(object):
     def write_to_output(self, out=None):
         """Write this response to out. If out is None or not presented,
         stdout will be used instead."""
+        # Check the output file
         if out is None:
             out = sys.stdout
 
-        out.write(self._get_header_string())
-        out.write('\r\n\r\n')
-        out.flush()
+        # Generate header string and body
+        header_string = self._get_header_string()
+        if self.view is None:
+            body = ''
+        else:
+            body = self.view.render_body()
 
-        if self.view is not None:
-            self.view.write_to_output(out)
+        # Write everything to output
+        out.write(header_string)
+        out.write('\r\n\r\n')
+        out.write(body)
+        out.flush()
 
 
 class HttpRedirectResponse(HttpResponse):

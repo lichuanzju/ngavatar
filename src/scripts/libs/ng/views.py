@@ -62,16 +62,9 @@ class View(object):
         """Render the body of this view."""
         return ''
 
-    def write_to_output(self, out=None):
-        """Write this view to out file. If out file is not specified,
-        stdout is used."""
-        if out is None:
-            out = sys.stdout
-
-        body = self._render_body()
-
-        out.write(body)
-        out.flush()
+    def render_body(self):
+        """Render and return the body of this view."""
+        return self._render_body()
 
 
 class StaticView(View):
@@ -173,11 +166,11 @@ class TemplateView(View):
 def test_View():
     print 'Emtpy view:'
     empty_view = View()
-    empty_view.write_to_output()
+    print empty_view.render_body()
 
     print 'To file:'
     with open('/tmp/view', 'w') as tmp_file:
-        empty_view.write_to_output(tmp_file)
+        tmp_file.write(empty_view.render_body())
     print 'The view has been written to /tmp/view'
 
 
@@ -188,7 +181,7 @@ def test_StaticView():
         html_file.write("<html>\n</html>")
 
     static_view = StaticView('/tmp/static.html')
-    static_view.write_to_output()
+    print static_view.render_body()
 
 
 def test_ImageView():
@@ -196,7 +189,7 @@ def test_ImageView():
 
     image_view = ImageView('/tmp/image.png')
     with open('/tmp/imageview', 'wb') as tmp_file:
-        image_view.write_to_output(tmp_file)
+        tmp_file.write(image_view.render_body())
 
     print "The view has been written to /tmp/imageview"
 
@@ -206,7 +199,7 @@ def test_BinaryDataView():
 
     binary_view = BinaryDataView('/tmp/image.png')
     with open('/tmp/binarydataview', 'wb') as tmp_file:
-        binary_view.write_to_output(tmp_file)
+        tmp_file.write(binary_view.render_body())
 
     print "The view has been written to /tmp/binarydataview"
 
@@ -220,7 +213,7 @@ def test_TemplateView():
         'body': '<h2>Welcome</h2>',
     }
     template_view = TemplateView('/tmp/template.html', template_arguments)
-    template_view.write_to_output()
+    print template_view.render_body()
 
 
 if __name__ == '__main__':
