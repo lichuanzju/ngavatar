@@ -3,10 +3,13 @@
 
 from ng.excepts import HttpError
 import _index
+import _signup
+
 
 # Handlers table
 _handlers = {
     '/': _index.handler,
+    '/signup': _signup.handler,
 }
 
 
