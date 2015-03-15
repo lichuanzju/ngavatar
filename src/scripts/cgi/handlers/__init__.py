@@ -4,11 +4,13 @@
 from ng.excepts import HttpError
 import _index
 import _signup
+import _favicon
 
 
 # Handlers table
 _handlers = {
     '/': _index.handler,
+    '/favicon.ico': _favicon.handler,
     '/signup': _signup.handler,
 }
 
