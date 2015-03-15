@@ -5,7 +5,6 @@ stored in the package global variable SITE_CONF"""
 
 import os
 from ng.excepts import HttpError
-from ng.views import StaticErrorView
 
 
 class ConfigurationLoadError(HttpError):
@@ -45,16 +44,8 @@ def static_filepath(static_filename):
                         static_filename)
 
 
-def static_error_view(error_code):
-    """Return view for error pages according to error code."""
-    return StaticErrorView(
-        error_code,
-        static_filepath(SITE_CONF['error_pages'][error_code])
-    )
-
-
 # Get absolute path for configuration file
-_conf_relative_filepath = '../../conf/ngavatar.conf'
+_conf_relative_filepath = '../conf/ngavatar.conf'
 _current_path = os.path.dirname(os.path.realpath(__file__))
 _conf_filepath = _current_path + '/' + _conf_relative_filepath
 
