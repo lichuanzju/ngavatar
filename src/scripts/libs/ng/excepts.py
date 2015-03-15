@@ -9,9 +9,10 @@ class NGError(Exception):
 class HttpError(NGError):
     """Error that is raised when an http error code is required to send."""
 
-    def __init__(self, error_code):
+    def __init__(self, error_code, **extra_headers):
         "Create an http error with http error code."
         self.error_code = error_code
+        self.extra_headers = extra_headers
 
     def __str__(self):
         "Return description of this error."
