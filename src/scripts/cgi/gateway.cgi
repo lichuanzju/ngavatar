@@ -3,6 +3,7 @@
 
 import cgi
 import cgitb
+cgitb.enable()
 import os
 from ng.http import HttpRequest
 from ng.http import HttpErrorResponse
