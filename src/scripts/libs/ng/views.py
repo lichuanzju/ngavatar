@@ -24,6 +24,10 @@ class View(object):
     def _render_with_file(self, filepath, text_mode):
         """Render the body of this view with specified file.
         text_mode should be True if the file is a text file."""
+        # Empty path means empty view
+        if not filepath:
+            return ''
+
         # Set file open mode
         if text_mode:
             open_mode = 'r'
