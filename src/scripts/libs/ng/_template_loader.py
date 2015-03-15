@@ -2,6 +2,9 @@
 
 
 import errno
+import contextlib
+import sys
+from cStringIO import StringIO
 from excepts import NGError
 from excepts import FileLocateError
 from excepts import FileReadError
@@ -29,6 +32,24 @@ class TemplateEvalError(NGError):
     def __str__(self):
         """Return description of this error."""
         return 'Can\'t evaluate "%s"' % self.template_string
+
+
+@contextlib.contextmanager
+def _stdoutIO(out=None):
+    """Context manager that replaces stdout with StringIO within context."""
+    # Save stdout
+    old = sys.stdout
+
+    # Replace stdout with StringIO
+    if out is None:
+        out = StringIO()
+    sys.stdout = out
+
+    # Return StringIO object
+    yield out
+
+    # Restore stdout
+    sys.stdout = old
 
 
 def _split_template(template_string):
@@ -60,13 +81,12 @@ def _split_template(template_string):
 
 def _eval_py(py_part, template_variables):
     """Evaluate a python part with given variables."""
-    template_variables['_result_'] = ''
     try:
-        exec(py_part, template_variables)
-    except:
+        with _stdoutIO() as s:
+            exec(py_part, template_variables)
+        return s.getvalue()
+    except Exception as e:
         raise TemplateEvalError(py_part)
-
-    return str(template_variables['_result_'])
 
 
 def _eval_template(template_string, template_args):
@@ -75,7 +95,6 @@ def _eval_template(template_string, template_args):
 
     template_variables = {
         'args': template_args,
-        '_result_': '',
     }
     for py_index in range(1, len(parts), 2):
         parts[py_index] = _eval_py(parts[py_index], template_variables)
@@ -122,7 +141,15 @@ def test_load():
     print load_template("/tmp/template.html", template_args)
 
 
+def test_eval():
+    pystr = 'print a'
+    print _eval_py(pystr, {'a':1})
+
+
 if __name__ == '__main__':
+    print "Eval Test:"
+    test_eval()
+
     print "Split Test:"
     test_split()
 
