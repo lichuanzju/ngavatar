@@ -34,12 +34,18 @@ def _load_configuration(conf_filepath):
 
 def template_filepath(template_filename):
     """Return the absolute path to a template file."""
+    if not template_filename:
+        return None
+
     return os.path.join(SITE_CONF.get('template_path', ''),
                         template_filename)
 
 
 def static_filepath(static_filename):
     """Return the absolute path to a static file."""
+    if not static_filename:
+        return None
+
     return os.path.join(SITE_CONF.get('static_path', ''),
                         static_filename)
 
