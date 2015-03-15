@@ -83,7 +83,7 @@ def _eval_py(py_part, template_variables):
     """Evaluate a python part with given variables."""
     try:
         with _stdoutIO() as s:
-            exec(py_part, template_variables)
+            exec(py_part, template_variables, {})
         return s.getvalue()
     except Exception as e:
         raise TemplateEvalError(py_part)
@@ -93,11 +93,8 @@ def _eval_template(template_string, template_args):
     """Evaluate template string with specified arguments."""
     parts = _split_template(template_string)
 
-    template_variables = {
-        'args': template_args,
-    }
     for py_index in range(1, len(parts), 2):
-        parts[py_index] = _eval_py(parts[py_index], template_variables)
+        parts[py_index] = _eval_py(parts[py_index], template_args)
 
     return ''.join(parts)
 
@@ -139,6 +136,7 @@ def test_load():
     }
 
     print load_template("/tmp/template.html", template_args)
+    print template_args.keys()
 
 
 def test_eval():
