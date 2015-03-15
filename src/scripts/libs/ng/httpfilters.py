@@ -5,12 +5,12 @@ handlers"""
 from excepts import HttpError
 
 
-def method_checker(*http_methods):
+def allow_methods(*http_methods):
     """Filter that checks whether the method of the HTTP request is
     supported."""
-    def method_checker_decorator(handler):
+    def allow_methods_decorator(handler):
         """The real decorator."""
-        def method_checker_wrapper(request, *args):
+        def allow_methods_wrapper(request, *args):
             """Wrapper function."""
             if request.method not in http_methods:
                 allow_header = str(http_methods)[1:-1]
@@ -18,6 +18,6 @@ def method_checker(*http_methods):
 
             return handler(request, *args)
 
-        return method_checker_wrapper
+        return allow_methods_wrapper
 
-    return method_checker_decorator
+    return allow_methods_decorator

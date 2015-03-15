@@ -7,7 +7,7 @@ from ng import httpfilters
 import config
 
 
-@httpfilters.method_checker('GET')
+@httpfilters.allow_methods('GET')
 def handler(request, conf):
     """The handler function."""
     template_args = dict(
