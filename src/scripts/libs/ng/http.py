@@ -168,6 +168,10 @@ class HttpResponse(object):
         """Add extra headers to this response."""
         self.headers.update(headers)
 
+    def add_header(self, name, value):
+        """Add extra header to this response."""
+        self.headers[name] = value
+
     def remove_header(self, header_name):
         """Remove the specified header from this response."""
         if header_name in self.headers:
