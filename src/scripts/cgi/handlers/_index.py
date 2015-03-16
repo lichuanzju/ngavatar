@@ -39,7 +39,14 @@ def handler(request, conf):
         # Check session expiring time
         if session.expired():
             session.invalidate()
-            return index_response(conf)
+            cookie = _sessionhelper.expire_cookie_for_session(
+                session,
+                '/',
+                request.server_name
+            )
+            response = index_response(conf)
+            response.set_cookie(cookie)
+            return response
 
         # Check session data
         uid = session.get_attribute('UID')

@@ -28,6 +28,6 @@ def handler(request, conf):
                 '/',
                 request.server_name
             )
-            response.add_header('Set-Cookie', cookie.http_header())
+            response.set_cookie(cookie)
 
     return response

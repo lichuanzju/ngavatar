@@ -12,6 +12,8 @@ import _sessionhelper
 @httpfilters.allow_methods('GET')
 def handler(request, conf):
     """The handler function."""
+    cookie = None
+
     with MySQLDatabase(conf.get('database_connection')) as db:
         # Get session from database
         session = _sessionhelper.get_session(request, db)
@@ -20,6 +22,11 @@ def handler(request, conf):
         if session is not None:
             if session.expired():
                 session.invalidate()
+                cookie = _sessionhelper.expire_cookie_for_session(
+                    session,
+                    '/',
+                    request.server_name
+                )
             else:
                 return HttpRedirectResponse('/usermain')
 
@@ -35,4 +42,6 @@ def handler(request, conf):
         template_args
     )
 
-    return HttpResponse(signin_view)
+    response = HttpResponse(signin_view)
+    response.set_cookie(cookie)
+    return response
