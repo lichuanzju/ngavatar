@@ -81,6 +81,6 @@ def handler(request, conf):
         )
 
         # Create redirect response to /usermain
-        response = HttpRedirectResponse('/usermain?uid=%s' % uid)
+        response = HttpRedirectResponse('/usermain')
         response.add_headers({'Set-Cookie': cookie.http_header()})
         return response
