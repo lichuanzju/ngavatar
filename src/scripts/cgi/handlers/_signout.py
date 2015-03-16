@@ -7,7 +7,7 @@ from ng.database import MySQLDatabase
 from ng.http import HttpResponse, HttpRedirectResponse, HttpCookie
 from ng.views import TemplateView
 import config
-import _session_check
+import _sessionhelper
 
 
 @httpfilters.allow_methods('GET')
@@ -18,12 +18,12 @@ def handler(request, conf):
 
     with MySQLDatabase(conf.get('database_connection')) as db:
         # Get session from database
-        session = _session_check.get_session(request, db)
+        session = _sessionhelper.get_session(request, db)
 
         # Remove session from database and generate expiring cookie
         if session is not None:
             session.invalidate()
-            cookie = _session_check.expire_cookie_for_session(
+            cookie = _sessionhelper.expire_cookie_for_session(
                 session,
                 '/',
                 request.server_name

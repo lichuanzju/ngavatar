@@ -6,7 +6,7 @@ from ng.database import MySQLDatabase
 from ng.http import HttpResponse, HttpRedirectResponse
 from ng.views import TemplateView
 import config
-import _session_check
+import _sessionhelper
 
 
 @httpfilters.allow_methods('GET')
@@ -14,7 +14,7 @@ def handler(request, conf):
     """The handler function."""
     with MySQLDatabase(conf.get('database_connection')) as db:
         # Get session from database
-        session = _session_check.get_session(request, db)
+        session = _sessionhelper.get_session(request, db)
 
         # Check session, redirect request to /usermain if valid
         if session is not None:
