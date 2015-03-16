@@ -18,7 +18,7 @@ def handler(request, conf):
         # Get session from database
         session = _sessionhelper.get_session(request, db)
 
-        # Check session, redirect request to /usermain if valid
+        # Check session, redirect request to user main page if valid
         if session is not None:
             if session.expired():
                 session.invalidate()
@@ -28,7 +28,7 @@ def handler(request, conf):
                     request.server_name
                 )
             else:
-                return HttpRedirectResponse('/usermain')
+                return HttpRedirectResponse('/user/main')
 
     username = request.field_storage.getvalue('username', '')
 

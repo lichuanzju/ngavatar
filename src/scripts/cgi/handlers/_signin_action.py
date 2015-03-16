@@ -80,7 +80,7 @@ def handler(request, conf):
             request.server_name
         )
 
-        # Create redirect response to /usermain
-        response = HttpRedirectResponse('/usermain')
+        # Create redirect response to user main page
+        response = HttpRedirectResponse('/user/main')
         response.add_header('Set-Cookie', cookie.http_header())
         return response
