@@ -268,6 +268,11 @@ class HttpSession(object):
         pass
 
     @abc.abstractmethod
+    def get_expire_time(self):
+        """Get the expire time of this session."""
+        pass
+
+    @abc.abstractmethod
     def invalidate(self):
         """Remove this session."""
         pass
@@ -320,6 +325,10 @@ class DatabaseSession(HttpSession):
         self.model.set_data_attribute(attribute_name,
                                       attribute_value)
         self.model.store_session_data(self.db)
+
+    def get_expire_time(self):
+        """Get the expire time of this session."""
+        return self.model['expire_time']
 
     def expired(self):
         """Return whether this session has expired."""
