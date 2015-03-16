@@ -172,6 +172,11 @@ class HttpResponse(object):
         """Add extra header to this response."""
         self.headers[name] = value
 
+    def set_cookie(self, cookie):
+        """Add cookie to this response."""
+        if cookie is not None:
+            self.headers['Set-Cookie'] = cookie.http_header()
+
     def remove_header(self, header_name):
         """Remove the specified header from this response."""
         if header_name in self.headers:
