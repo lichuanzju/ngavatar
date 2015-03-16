@@ -2,8 +2,10 @@
 
 import abc
 import datetime
-from database import Database
 from excepts import HttpError
+from database import Database
+from database import DatabaseAccessError
+from database import DatabaseIntegerityError
 import str_generator
 
 
@@ -13,7 +15,7 @@ class ModelError(HttpError):
     def __init__(self, reason):
         """Create model error with reason of error."""
         HttpError.__init__(self, 500)
-        self.reason = reason
+        self.reason = str(reason)
 
     def __str__(self):
         """Return description of this error."""
@@ -104,7 +106,8 @@ class DatabaseModel(dict):
             raise ModelError('Trying to read primary key before setting it')
 
     def insert_to_database(self, db):
-        """Insert self to database."""
+        """Insert this instance to database. Return whether inserted
+        successfullly."""
         # Create INSERT statement
         sql = 'INSERT INTO %s VALUES (' % self.__class__._table_name
         args = []
@@ -117,7 +120,10 @@ class DatabaseModel(dict):
         # End values
         sql += ')'
 
-        return db.execute_sql(sql, args)
+        try:
+            return db.execute_sql(sql, args) == 1
+        except DatabaseIntegerityError:
+            return False
 
     def reload_from_database(self, db, *query_cols):
         """Reload this instance from database using a query
@@ -145,21 +151,26 @@ class DatabaseModel(dict):
                 self[key] = value
 
     def delete_from_database(self, db):
-        """Delete self from database."""
+        """Delete this instance from database. Return whether deleted
+        successfully."""
         # Create DELETE statement
         sql = 'DELETE FROM %s WHERE %s=%%s' % \
             (self.__class__._table_name, self.__class__._primary_key())
         args = [self._primary_key_value()]
 
-        return db.execute_sql(sql, args)
+        try:
+            return db.execute_sql(sql, args) == 1
+        except DatabaseIntegerityError:
+            return False
 
     def store_to_database(self, db):
-        """Store self to database by updating all attributes."""
+        """Store this instance to database by updating all attributes.
+        Return whether stored successfully."""
         return self.update_to_database(db, self.__class__._cols)
 
     def update_to_database(self, db, *cols_to_update):
-        """Update self in database.
-        cols_to_update contains attributes to update."""
+        """Update this instance in database. cols_to_update contains
+        attributes to update. Return whether updated successfully."""
         # If no column needs to update, return 0
         if not cols_to_update:
             return 0L
@@ -179,7 +190,10 @@ class DatabaseModel(dict):
         sql += ' WHERE %s=%%s' % self.__class__._primary_key()
         args.append(self._primary_key_value())
 
-        return db.execute_sql(sql, args)
+        try:
+            return db.execute_sql(sql, args) == 1
+        except DatabaseIntegerityError:
+            return False
 
     @classmethod
     def count_in_database(cls, db, **kwargs):
@@ -228,7 +242,8 @@ class Account(DatabaseModel):
 
     @classmethod
     def create_account(cls, db, username, password):
-        """Create a new account in database and return it."""
+        """Create a new account in database and return it. None is returned
+        if failed."""
         # Generate password hash
         salt = str_generator.random_string(5)
         password_hash = str_generator.sha1_hexdigest(
@@ -248,7 +263,8 @@ class Account(DatabaseModel):
             login_time=now,
             state=cls.STATE_NORMAL
         )
-        new_account.insert_to_database(db)
+        if not new_account.insert_to_database(db):
+            return None
 
         # Reload this instance from database
         new_account.reload_from_database(db, 'username')
@@ -267,7 +283,8 @@ class Account(DatabaseModel):
         return password_hash == self['passwd_hash']
 
     def change_password(self, db, new_passwd):
-        """Change password of this account."""
+        """Change password of this account. Return whether changed
+        successfully."""
         # Generate hash for the new password
         salt = str_generator.random_string(5)
         password_hash = str_generator.sha1_hexdigest(
@@ -280,7 +297,7 @@ class Account(DatabaseModel):
         self['salt'] = salt
 
         # Write the new password to database
-        return self.update_to_database(db, 'passwd_hash', 'salt') == 1
+        return self.update_to_database(db, 'passwd_hash', 'salt')
 
 
 class Profile(DatabaseModel):
@@ -308,7 +325,8 @@ class Profile(DatabaseModel):
     @classmethod
     def create_profile(cls, db, owner_account, nickname=None,
                        sex=None):
-        """Create a new profile in database and return it."""
+        """Create a new profile in database and return it. None is returned
+        if failed."""
         # Use username as default nickname
         if not nickname:
             nickname = owner_account['username']
@@ -323,7 +341,8 @@ class Profile(DatabaseModel):
             nickname=nickname,
             sex=sex
         )
-        new_profile.insert_to_database(db)
+        if not new_profile.insert_to_database(db):
+            return None
 
         # Reload this instance from database
         new_profile.reload_from_database(db, 'owner_uid')
@@ -331,7 +350,8 @@ class Profile(DatabaseModel):
         return new_profile
 
     def change_profile(self, db, nickname=None, sex=None):
-        """Change attributes of the profile."""
+        """Change attributes of the profile. Return whether changed
+        successfully."""
         # Collect updated attributes
         updated_cols = []
 
@@ -346,7 +366,7 @@ class Profile(DatabaseModel):
             updated_cols.append('sex')
 
         # Update data in database
-        return self.update_to_database(db, *updated_cols) == 1
+        return self.update_to_database(db, *updated_cols)
 
 
 class Avatar(DatabaseModel):
@@ -372,7 +392,8 @@ class Avatar(DatabaseModel):
 
     @classmethod
     def create_avatar(cls, db, owner_account, file_path):
-        """Create a new avatar in database."""
+        """Create a new avatar in database and return it. None is returned
+        if failed."""
         # Get the adding time
         now = datetime.datetime.now()
 
@@ -382,7 +403,8 @@ class Avatar(DatabaseModel):
             file_path=file_path,
             add_time=now
         )
-        new_avatar.insert_to_database(db)
+        if not new_avatar.insert_to_database(db):
+            return None
 
         # Reload the instance from database
         new_avatar.reload_from_database(db, 'owner_uid', 'file_path')
@@ -425,7 +447,8 @@ class Email(DatabaseModel):
 
     @classmethod
     def create_email(cls, db, owner_account, email, effective_hours=24):
-        """Create a new email address in database and return it."""
+        """Create a new email address in database and return it. None is
+        returned if failed."""
         # Generate hash and verification code
         email_hash = str_generator.sha1_hexdigest(email, 40)
         verification_code = str_generator.random_string(20)
@@ -445,7 +468,8 @@ class Email(DatabaseModel):
             verification_code=verification_code,
             verification_expire_time=verification_expire_time
         )
-        new_email.insert_to_database(db)
+        if not new_email.insert_to_database(db):
+            return None
 
         # Reload the new instance from database
         new_email.reload_from_database(db, 'email')
@@ -453,7 +477,7 @@ class Email(DatabaseModel):
         return new_email
 
     def renew_verification(self, db, effective_hours=24):
-        """Renew the verification code."""
+        """Renew the verification code. Return whether renewed successfully"""
         # Generate new verification information
         verification_code = str_generator.random_string(20)
         now = datetime.datetime.now()
@@ -467,7 +491,7 @@ class Email(DatabaseModel):
         # Update changed attributes to database
         self.update_to_database(db,
                                 'verification_code',
-                                'verification_expire_time') == 1
+                                'verification_expire_time')
 
     def verify(self, db, verification_code):
         """Verify this email address. Returning 0 means verified
@@ -491,8 +515,7 @@ class Email(DatabaseModel):
         self['state'] = self.__class__.STATE_VERIFIED
 
         # Update the state to database
-        lines = self.update_to_database(db, 'state')
-        if lines == 1:
+        if self.update_to_database(db, 'state'):
             return 0
         else:
             return 4
@@ -502,9 +525,9 @@ class Email(DatabaseModel):
         return self['avatar_id'] is not None
 
     def set_avatar(self, db, avatar):
-        """Set the avatar to this email."""
+        """Set the avatar to this email. Return whether set successfully."""
         self['avatar_id'] = avatar['aid']
-        return self.update_to_database(db, 'avatar_id') == 1
+        return self.update_to_database(db, 'avatar_id')
 
 
 class Session(DatabaseModel):
@@ -529,7 +552,8 @@ class Session(DatabaseModel):
     @classmethod
     def create_session(cls, db, session_key, data,
                        creator_ip, effective_hours=72):
-        """Create session instance in database."""
+        """Create session instance in database and return it. None is
+        returned if failed."""
         # Get expire time
         now = datetime.datetime.now()
         expire_time = now + datetime.timedelta(0, effective_hours * 3600)
@@ -541,7 +565,8 @@ class Session(DatabaseModel):
             expire_time=expire_time,
             creator_ip=creator_ip
         )
-        new_session.insert_to_database(db)
+        if not new_session.insert_to_database(db):
+            return None
 
         # Reload the instance from database
         new_session.reload_from_database(db, 'session_key')
@@ -562,14 +587,15 @@ class Session(DatabaseModel):
         return self['expire_time'] < datetime.datetime.now()
 
     def renew_session(self, db, effective_hours=72):
-        """Renew this session."""
+        """Renew this session in database. Return whether renewed
+        successfully"""
         # Get expire time
         now = datetime.datetime.now()
         expire_time = now + datetime.timedelta(0, effective_hours * 3600)
 
         self['expire_time'] = expire_time
 
-        return self.update_to_database(db, 'expire_time') == 1
+        return self.update_to_database(db, 'expire_time')
 
     def _parse_data(self):
         """Parse data to attributes."""
@@ -597,6 +623,7 @@ class Session(DatabaseModel):
         self.data_attributes[attribute_name] = attribute_value
 
     def store_session_data(self, db):
-        """Store session data to database."""
+        """Store session data to database. Return whether stored
+        successfully."""
         self._serilize_data_attributes()
         return self.update_to_database(db, 'data')
