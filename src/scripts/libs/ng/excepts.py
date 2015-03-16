@@ -1,7 +1,7 @@
 """This module defines exceptions that may be raised in this package."""
 
 
-class NGError(Exception):
+class NGError(StandardError):
     """Base class for exceptions in this package."""
     pass
 
