@@ -288,18 +288,28 @@ class DatabaseSession(HttpSession):
 
     @classmethod
     def create_session(cls, db, data, client_ip, effective_hours):
-        """Create a new session in database."""
-        session_key = str_generator.unique_id(40)
+        """Create a new session in database and return it. None is returned
+        if failed."""
+        # Try 3 times
+        for trial in range(3):
+            session_key = str_generator.unique_id(40)
 
-        session_model = Session.create_session(
-            db,
-            session_key,
-            data,
-            client_ip,
-            effective_hours
-        )
+            session_model = Session.create_session(
+                db,
+                session_key,
+                data,
+                client_ip,
+                effective_hours
+            )
 
-        return DatabaseSession(db, session_model)
+            if session_model is not None:
+                break
+
+        # If still not created, return None
+        if session_model is None:
+            return None
+        else:
+            return DatabaseSession(db, session_model)
 
     @classmethod
     def load_session(cls, db, session_key):
