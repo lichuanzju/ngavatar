@@ -6,6 +6,7 @@ import _index
 import _signup
 import _favicon
 import _signup_action
+import _signin
 
 
 # Handlers table
@@ -14,6 +15,7 @@ _handlers = {
     '/favicon.ico': _favicon.handler,
     '/signup': _signup.handler,
     '/signup_action': _signup_action.handler,
+    '/signin': _signin.handler,
 }
 
 

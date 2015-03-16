@@ -1,0 +1,15 @@
+<html>
+<head>
+<title>Sign In - {% print site_name, %}</title>
+</head>
+<body>
+<center><h1>Welcome to {% print site_name, %}!</h1></center>
+<hr/>
+<form action='./signin_action' method='post'>
+Username:<input type='text' name='username' value='{% print username, %}'/><br/>
+Password:<input type='password' name='password' /><br/>
+<input type='submit' value='Sign In' />
+</form>
+</body>
+</html>
+
