@@ -3,20 +3,34 @@
 
 import abc
 import MySQLdb
+from excepts import NGError
 from excepts import HttpError
 
 
-class DatabaseError(HttpError):
+class DatabaseAccessError(HttpError):
     """Error that is raised when failed to access database."""
 
     def __init__(self, reason):
-        """Create database error with specified reason."""
+        """Create database access error with specified reason."""
         HttpError.__init__(self, 500)
-        self.reason = reason
+        self.reason = str(reason)
 
     def __str__(self):
         """Return description of this error."""
-        return 'Failed to access database: %s' % self.reason
+        return 'Database access error - %s' % self.reason
+
+
+class DatabaseIntegerityError(NGError):
+    """Error that is raised when failed to execute operations in Database
+    because of data integerity constraints such as UNIQUE keys."""
+
+    def __init__(self, reason):
+        """Create database integerity error with specified reason."""
+        self.reason = str(reason)
+
+    def __str__(self):
+        """Return description of this error."""
+        return 'Database integerity error - %s' % self.reason
 
 
 class Database(object):
@@ -62,7 +76,10 @@ class MySQLDatabase(Database):
 
     def __init__(self, connect_params):
         """Create a MySQL database with connection parameters."""
-        self.connect_params = connect_params
+        if connect_params is None:
+            self.connect_params = {}
+        else:
+            self.connect_params = connect_params
         self.db = self._open_connection()
         self.cursor = self.db.cursor()
 
@@ -70,8 +87,8 @@ class MySQLDatabase(Database):
         """Open connection to the database."""
         try:
             return MySQLdb.connect(**self.connect_params)
-        except Exception as e:
-            raise DatabaseError(e)
+        except MySQLdb.MySQLError as e:
+            raise DatabaseAccessError(e)
 
     def get_query_result(self, query_sql, args=None):
         """Execute a query statement in MySQL database and return the
@@ -79,8 +96,8 @@ class MySQLDatabase(Database):
         try:
             self.cursor.execute(query_sql, args)
             return self.cursor.fetchall()
-        except Exception as e:
-            raise DatabaseError(e)
+        except MySQLdb.MySQLError as e:
+            raise DatabaseAccessError(e)
 
     def execute_sql(self, sql, args=None, commit=True):
         """Execute a sql statement in MySQL database and return number
@@ -90,23 +107,26 @@ class MySQLDatabase(Database):
             if commit:
                 self.db.commit()
             return rows
-        except Exception as e:
+        except MySQLdb.MySQLError as e:
             self.db.rollback()
-            raise DatabaseError(e)
+            if e.isinstance(MySQLdb.IntegrityError):
+                raise DatabaseIntegerityError(e)
+            else:
+                raise DatabaseAccessError(e)
 
     def commit_transaction(self):
         """Commit the current transaction."""
         try:
             self.db.commit()
         except Exception as e:
-            raise DatabaseError(e)
+            raise DatabaseAccessError(e)
 
     def close(self):
         """Close connection to MySQL database."""
         try:
             self.db.close()
         except Exception as e:
-            raise DatabaseError(e)
+            raise DatabaseAccessError(e)
 
     def __exit__(self,
                  exception_type, exception_value, exception_traceback):
