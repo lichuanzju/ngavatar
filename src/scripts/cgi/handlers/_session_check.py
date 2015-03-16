@@ -2,7 +2,8 @@
 requests."""
 
 
-from ng.http import DatabaseSession
+import datetime
+from ng.http import DatabaseSession, HttpCookie
 
 
 def get_session(request, db):
@@ -21,3 +22,22 @@ def get_session(request, db):
         return None
 
     return session
+
+
+def _expired_time():
+    """Return a datetime object that is smaller than now."""
+    return datetime.datetime.now() - datetime.timedelta(1)
+
+
+def expire_cookie_for_session(session, path, server_name):
+    """Generate http cookie that expires the specified session."""
+    if session is None:
+        return None
+
+    cookie_data = dict(SessionKey=session.get_session_key())
+    return HttpCookie(
+        cookie_data,
+        path,
+        _expired_time(),
+        server_name
+    )

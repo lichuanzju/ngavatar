@@ -23,15 +23,11 @@ def handler(request, conf):
         # Remove session from database and generate expiring cookie
         if session is not None:
             session.invalidate()
-
-            cookie_data = dict(SessionKey=session.get_session_key())
-            cookie = HttpCookie(
-                cookie_data,
+            cookie = _session_check.expire_cookie_for_session(
+                session,
                 '/',
-                datetime.datetime.now() - datetime.timedelta(1),
                 request.server_name
             )
-
             response.add_header('Set-Cookie', cookie.http_header())
 
     return response
