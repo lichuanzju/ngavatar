@@ -5,6 +5,7 @@ from ng.excepts import HttpError
 import _index
 import _signup
 import _favicon
+import _signup_action
 
 
 # Handlers table
@@ -12,6 +13,7 @@ _handlers = {
     '/': _index.handler,
     '/favicon.ico': _favicon.handler,
     '/signup': _signup.handler,
+    '/signup_action': _signup_action.handler,
 }
 
 
