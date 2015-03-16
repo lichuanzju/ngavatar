@@ -19,7 +19,7 @@ def handler(request, conf):
         # Check session, redirect request to /usermain if valid
         if session is not None:
             if session.expired():
-                session.delete_from_database(db)
+                session.invalidate()
             else:
                 return HttpRedirectResponse('/usermain')
 

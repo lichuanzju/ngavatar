@@ -38,7 +38,7 @@ def handler(request, conf):
 
         # Check session expiring time
         if session.expired():
-            session.delete_from_database(db)
+            session.invalidate()
             return index_response(conf)
 
         # Check session data
