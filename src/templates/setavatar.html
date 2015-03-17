@@ -6,7 +6,7 @@
 <center><h1>Welcome to {% print site_name, %}!</h1></center>
 <hr/>
 {%
-print account.get('username'), '<br/>'
+print '<a href="/user/main">', account.get('username'), '</a><br/>'
 print '<a href="/signout">Sign Out</a><br/>'
 %}
 <br/><br/>
