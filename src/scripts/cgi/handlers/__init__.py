@@ -16,6 +16,7 @@ import _addavatar_action
 import _avatar
 import _setavatar
 import _setavatar_action
+import _avatar_api
 
 
 # Handlers table
@@ -34,6 +35,7 @@ _handlers = {
     '/user/avatar': _avatar.handler,
     '/user/setavatar': _setavatar.handler,
     '/user/setavatar_action': _setavatar_action.handler,
+    '/avatar': _avatar_api.handler,
 }
 
 
