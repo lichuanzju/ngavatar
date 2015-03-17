@@ -109,7 +109,7 @@ class MySQLDatabase(Database):
             return rows
         except MySQLdb.MySQLError as e:
             self.db.rollback()
-            if e.isinstance(MySQLdb.IntegrityError):
+            if isinstance(e, MySQLdb.IntegrityError):
                 raise DatabaseIntegerityError(e)
             else:
                 raise DatabaseAccessError(e)
