@@ -15,7 +15,10 @@ print '<a href="/signout">Sign Out</a><br/>'
 for email in emails:
     print email.get('email'),
     print '<button type="button" onclick="location.href=\'/user/setavatar?emid=%d\'">' % email.get('emid'),
-    print 'Set Avatar</button>'
+    print 'Set Avatar</button>',
+    aid = email.get('avatar_id')
+    if aid is not None:
+        print '<img src="./avatar?id=%d" />' % aid,
     print '<br/>'
 %}
 <button type="button" onclick="location.href='./addemail'">Add Email</button><br/>
