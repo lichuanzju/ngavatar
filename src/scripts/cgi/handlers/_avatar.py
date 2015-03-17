@@ -40,7 +40,7 @@ def handler(request, conf):
         account = account_or_response
 
         # Check the id in the query string
-        aid = request.field_storage.getvalue('id')
+        aid = int(request.field_storage.getvalue('id', 0))
         if not aid:
             return http_error_response(404, conf)
 
