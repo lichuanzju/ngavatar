@@ -15,8 +15,12 @@ print '<a href="/signout">Sign Out</a><br/>'
 <form action="./setavatar_action" method="post">
 <input type="hidden" name="emid" value="{% print email.get('emid'), %}" />
 {%
+email_aid = email.get('avatar_id')
 for avatar in avatars:
     aid = avatar.get('aid')
+    if aid == email_aid:
+        continue
+
     print '<input type="radio" name="aid" value="%d" />' % aid
     print '<image src="./avatar?id=%d" /><br/><br/>' % aid
 %}
