@@ -1,0 +1,20 @@
+<html>
+<head>
+<title>Avatar Set Successfully - {% print site_name, %}</title>
+</head>
+<body>
+<center><h1>Welcome to {% print site_name, %}!</h1></center>
+<hr/>
+{%
+if account is None:
+    print '<a href="/signup">Sign Up</a><br/>'
+    print '<a href="/signin">Sign In</a><br/>'
+else:
+    print '<a href="/user/main">', account.get('username'), '</a><br/>'
+    print '<a href="/signout">Sign Out</a><br/>'
+%}
+<br/><br/>
+<p><h2>The avatar has been removed from email address {% print email.get('email'), %}</h2></p>
+</form>
+</body>
+</html>

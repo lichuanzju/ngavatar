@@ -44,6 +44,22 @@ def successful_response(account, email, avatar, conf):
     return HttpResponse(successful_view)
 
 
+def remove_avatar_response(account, email, conf):
+    """Generate remove avatar successful page."""
+    template_args = dict(
+        account=account,
+        email=email,
+        site_name=conf.get('name', '')
+    )
+
+    remove_view = TemplateView(
+        config.template_filepath('removeavatar_successful.html'),
+        template_args
+    )
+
+    return HttpResponse(remove_view)
+
+
 @httpfilters.allow_methods('POST')
 def handler(request, conf):
     """The handler function."""
@@ -70,6 +86,17 @@ def handler(request, conf):
         aid = int(request.field_storage.getvalue('aid', 0))
         if not aid:
             return failed_response(account, 'invalid avatar ID', conf)
+
+        # Check whether needed to remove the avatar binding
+        if aid < 0:
+            email['avatar_id'] = None
+            if email.update_to_database(db, 'avatar_id'):
+                return remove_avatar_response(account, email, conf)
+            else:
+                return failed_response(
+                    account,
+                    'cannot remove avatar from email %s' % email.get('email'),
+                    conf)
 
         # Check avatar in database
         avatar = Avatar.load_from_database(db,
