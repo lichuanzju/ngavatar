@@ -1,0 +1,26 @@
+<html>
+<head>
+<title>Set Avatar - {% print site_name, %}</title>
+</head>
+<body>
+<center><h1>Welcome to {% print site_name, %}!</h1></center>
+<hr/>
+{%
+print account.get('username'), '<br/>'
+print '<a href="/signout">Sign Out</a><br/>'
+%}
+<br/><br/>
+<h3>Set avatar for email address "{% print email.get('email'), %}"</h3>
+<br/>
+<form action="./setavatar_action" method="post">
+<input type="hidden" name="emid" value="{% print email.get('emid'), %}" />
+{%
+for avatar in avatars:
+    aid = avatar.get('aid')
+    print '<input type="radio" name="aid" value="%d" />' % aid
+    print '<image src="./avatar?id=%d" /><br/><br/>' % aid
+%}
+<input type="submit" value="Set Avatar" />
+</form>
+</body>
+</html>

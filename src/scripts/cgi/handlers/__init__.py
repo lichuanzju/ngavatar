@@ -14,6 +14,7 @@ import _addemail_action
 import _addavatar
 import _addavatar_action
 import _avatar
+import _setavatar
 
 
 # Handlers table
@@ -30,6 +31,7 @@ _handlers = {
     '/user/addavatar': _addavatar.handler,
     '/user/addavatar_action': _addavatar_action.handler,
     '/user/avatar': _avatar.handler,
+    '/user/setavatar': _setavatar.handler,
 }
 
 
