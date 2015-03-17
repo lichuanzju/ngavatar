@@ -5,10 +5,12 @@
 <body>
 <center><h1>Welcome to {% print site_name, %}!</h1></center>
 <hr/>
+<br/>
 <form action='./signin_action' method='post'>
-Username:<input type='text' name='username' value='{% print username, %}'/><br/>
-Password:<input type='password' name='password' /><br/>
-<input type='submit' value='Sign In' />
+Username:&nbsp;<input type='text' name='username' value='{% print username, %}'/><br/><br/>
+Password:&nbsp;<input type='password' name='password' /><br/><br/>
+<input type='submit' value='Sign In' />&nbsp;&nbsp;
+<a href="./signup">Sign Up</a>
 </form>
 </body>
 </html>
