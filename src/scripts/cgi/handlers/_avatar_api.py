@@ -33,6 +33,7 @@ def handler(request, conf):
     email_hash = request.field_storage.getvalue('email_hash')
     if not email_hash:
         return http_error_response(404, conf)
+    email_hasn = email_hash.lower()
 
     with MySQLDatabase(conf.get('database_connection')) as db:
         email = Email.load_from_database(db, email_hash=email_hash)
