@@ -1,0 +1,23 @@
+<html>
+<head>
+<title>Welcome - {% print site_name, %}</title>
+</head>
+<body>
+<center><h1>Welcome to {% print site_name, %}!</h1></center>
+<hr/>
+{%
+if account is None:
+    print '<a href="/signup">Sign Up</a><br/>'
+    print '<a href="/signin">Sign In</a><br/>'
+else:
+    print '<a href="/user/main">', account.get('username'), '</a><br/>'
+    print '<a href="/signout">Sign Out</a><br/>'
+%}
+<br/><br/>
+<h3>Add Avatar</h3>
+<form action="./addavatar_action" method="post" enctype="multipart/form-data">
+Avatar: <input type="file" name="avatar_file" />
+<input type="submit" value="Add"/>
+</form>
+</body>
+</html>

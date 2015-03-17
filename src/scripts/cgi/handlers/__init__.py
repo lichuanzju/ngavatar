@@ -11,6 +11,8 @@ import _signout
 import _usermain
 import _addemail
 import _addemail_action
+import _addavatar
+import _addavatar_action
 
 
 # Handlers table
@@ -24,6 +26,8 @@ _handlers = {
     '/user/main': _usermain.handler,
     '/user/addemail': _addemail.handler,
     '/user/addemail_action': _addemail_action.handler,
+    '/user/addavatar': _addavatar.handler,
+    '/user/addavatar_action': _addavatar_action.handler,
 }
 
 
