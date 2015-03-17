@@ -10,7 +10,7 @@ print '<a href="/user/main">', account.get('username'), '</a><br/>'
 print '<a href="/signout">Sign Out</a><br/>'
 %}
 <br/><br/>
-<h3>Select avatar for email address "{% print email.get('email'), %}"</h3>
+<h3>Select avatar for email address {% print email.get('email'), %}</h3>
 <br/>
 <form action="./setavatar_action" method="post">
 <input type="hidden" name="emid" value="{% print email.get('emid'), %}" />
