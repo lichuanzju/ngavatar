@@ -50,6 +50,15 @@ def static_filepath(static_filename):
                         static_filename)
 
 
+def storage_filepath(storage_filename):
+    """Return the absolute path to a storage file."""
+    if not storage_filename:
+        return None
+
+    return os.path.join(SITE_CONF.get('storage_path', ''),
+                        storage_filename)
+
+
 # Get absolute path for configuration file
 _conf_relative_filepath = '../conf/ngavatar.conf'
 _current_path = os.path.dirname(os.path.realpath(__file__))
