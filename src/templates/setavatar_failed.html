@@ -6,12 +6,8 @@
 <center><h1>Welcome to {% print site_name, %}!</h1></center>
 <hr/>
 {%
-if account is None:
-    print '<a href="/signup">Sign Up</a><br/>'
-    print '<a href="/signin">Sign In</a><br/>'
-else:
-    print '<a href="/user/main">', account.get('username'), '</a><br/>'
-    print '<a href="/signout">Sign Out</a><br/>'
+print '<a href="/user/main">', account.get('username'), '</a><br/>'
+print '<a href="/signout">Sign Out</a><br/>'
 %}
 <br/><br/>
 <p><h2>Failed to set avatar: {% print error_message, %}</h2></p>
