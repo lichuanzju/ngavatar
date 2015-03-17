@@ -23,7 +23,7 @@ for email in emails:
 <h3>Avatars</h3>
 {%
 for avatar in avatars:
-    print '<image src="./avatar?id=%d">' % avatar.get('aid'), '&nbsp;&nbsp;'
+    print '<image src="./avatar?id=%d" />' % avatar.get('aid'), '&nbsp;&nbsp;'
 %}
 <button type="button" onclick="location.href='./addavatar'">Add Avatar</button><br/>
 </body>
