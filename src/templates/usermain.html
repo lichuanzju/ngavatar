@@ -11,22 +11,29 @@ print '<a href="/signout">Sign Out</a><br/>'
 %}
 <br/><br/>
 <h3>Emails</h3>
+<ul>
 {%
 for email in emails:
+    print '<li>',
+
     print email.get('email'),
     print '<button type="button" onclick="location.href=\'/user/setavatar?emid=%d\'">' % email.get('emid'),
     print 'Set Avatar</button>',
+
     aid = email.get('avatar_id')
     if aid is not None:
-        print '<img src="./avatar?id=%d" />' % aid,
-    print '<br/>'
+        print '<img src="./avatar?id=%d" width="64px"/>' % aid,
+
+    print '</li>'
 %}
+</ul>
+<br/>
 <button type="button" onclick="location.href='./addemail'">Add Email</button><br/>
 </br>
 <h3>Avatars</h3>
 {%
 for avatar in avatars:
-    print '<image src="./avatar?id=%d" />' % avatar.get('aid'), '&nbsp;&nbsp;'
+    print '<image src="./avatar?id=%d" width="64px"/>' % avatar.get('aid'), '&nbsp;&nbsp;'
 %}
 <button type="button" onclick="location.href='./addavatar'">Add Avatar</button><br/>
 </body>
