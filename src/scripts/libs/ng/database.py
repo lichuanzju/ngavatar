@@ -70,7 +70,7 @@ class Database(object):
                  exception_type, exception_value, exception_traceback):
         """Method that is called when exiting context."""
         self.close()
-        return True
+        return False
 
 
 class MySQLDatabase(Database):
