@@ -1,4 +1,4 @@
-"""This module defines low level API for accessing MySQL databases."""
+"""This module defines low level API for accessing databases."""
 
 
 import abc
@@ -41,13 +41,15 @@ class Database(object):
     @abc.abstractmethod
     def get_query_result(self, query_sql, args=None):
         """Abstract method that executes a sql query in the database and
-        return the result as tuples."""
+        return the result as nested tuples. args is a sequence or dictionary
+        used to format the query_sql string."""
         pass
 
     @abc.abstractmethod
     def execute_sql(self, sql, args=None, commit=True):
-        """Abstract method that executes a sql statement
-        (INSERT/UPDATE/DELETE)."""
+        """Abstract method that executes a sql statement (INSERT/UPDATE/
+        DELETE). args is used to format the sql string. commit is a boolean
+        value that indicates whether commit after execution is required."""
         pass
 
     @abc.abstractmethod
@@ -84,7 +86,7 @@ class MySQLDatabase(Database):
         self.cursor = self.db.cursor()
 
     def _open_connection(self):
-        """Open connection to the database."""
+        """Open connection to database and return the connection object"""
         try:
             return MySQLdb.connect(**self.connect_params)
         except MySQLdb.MySQLError as e:
@@ -92,7 +94,8 @@ class MySQLDatabase(Database):
 
     def get_query_result(self, query_sql, args=None):
         """Execute a query statement in MySQL database and return the
-        result as tuples."""
+        result as nested tuples. args is used to format the query_sql
+        string."""
         try:
             self.cursor.execute(query_sql, args)
             return self.cursor.fetchall()
@@ -101,7 +104,8 @@ class MySQLDatabase(Database):
 
     def execute_sql(self, sql, args=None, commit=True):
         """Execute a sql statement in MySQL database and return number
-        of affected rows."""
+        of affected rows. args is used to format the sql string. commit
+        indicates whether a commit operation is required after execution."""
         try:
             rows = self.cursor.execute(sql, args)
             if commit:
