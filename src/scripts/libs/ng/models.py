@@ -356,16 +356,10 @@ class Email(DatabaseModel):
         'email',
         'owner_uid',
         'email_hash',
-        'state',
         'avatar_id',
         'add_time',
-        'verification_code',
-        'verification_expire_time'
     ]
     _pk_col_index = 0
-
-    STATE_NOTVERIFIED = 0
-    STATE_VERIFIED = 1
 
     @classmethod
     def email_exists(cls, db, email):
@@ -373,35 +367,21 @@ class Email(DatabaseModel):
         return Email.count_in_database(db, email=email) != 0
 
     @classmethod
-    def email_expired(cls, db, email):
-        """Check whether the email address is expired."""
-        email_object = Email.load_from_database(db, email=email)
-        now = datetime.datetime.now()
-        return email_object['state'] == cls.STATE_NOTVERIFIED and \
-            email_object['verification_expire_time'] < now
-
-    @classmethod
-    def create_email(cls, db, owner_account, email, effective_hours=24):
+    def create_email(cls, db, owner_account, email):
         """Create a new email address in database and return it. None is
         returned if failed."""
         # Generate hash and verification code
         email_hash = str_generator.sha1_hexdigest(email, 40)
-        verification_code = str_generator.random_string(20)
 
-        # Get time of adding and time for verification code to expire
+        # Get add time
         add_time = datetime.datetime.now()
-        verification_expire_time = add_time + \
-            datetime.timedelta(0, effective_hours * 3600)
 
         # Create new email instance and insert it to database
         new_email = Email(
             email=email,
             owner_uid=owner_account['uid'],
             email_hash=email_hash,
-            state=cls.STATE_NOTVERIFIED,
             add_time=add_time,
-            verification_code=verification_code,
-            verification_expire_time=verification_expire_time
         )
         if not new_email.insert_to_database(db):
             return None
@@ -410,50 +390,6 @@ class Email(DatabaseModel):
         new_email.reload_from_database(db, 'email')
 
         return new_email
-
-    def renew_verification(self, db, effective_hours=24):
-        """Renew the verification code. Return whether renewed successfully"""
-        # Generate new verification information
-        verification_code = str_generator.random_string(20)
-        now = datetime.datetime.now()
-        expire_time = now + \
-            datetime.timedelta(0, effective_hours * 3600)
-
-        # Change attributes of this instance
-        self['verification_code'] = verification_code
-        self['verification_expire_time'] = expire_time
-
-        # Update changed attributes to database
-        self.update_to_database(db,
-                                'verification_code',
-                                'verification_expire_time')
-
-    def verify(self, db, verification_code):
-        """Verify this email address. Returning 0 means verified
-        successfully, 1 means this email has already been verified,
-        2 means the verification is incorrect, 3 means verification
-        code is expired, 4 means failed to access database."""
-        # Check the current state
-        if self['state'] != self.__class__.STATE_NOTVERIFIED:
-            return 1
-
-        # Check the verification code
-        if verification_code != self['verification_code']:
-            return 2
-
-        # Check the expiring time
-        now = datetime.datetime.now()
-        if now > self['verification_expire_time']:
-            return 3
-
-        # Change the state
-        self['state'] = self.__class__.STATE_VERIFIED
-
-        # Update the state to database
-        if self.update_to_database(db, 'state'):
-            return 0
-        else:
-            return 4
 
     def avatar_alreadyset(self):
         """Check whether the avatar is already set to this email."""

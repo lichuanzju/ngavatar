@@ -84,7 +84,6 @@ def handler(request, conf):
             db,
             account,
             email_addr,
-            24
         )
 
         # Check email creation
