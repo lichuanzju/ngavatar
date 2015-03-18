@@ -128,12 +128,6 @@ class MySQLDatabase(Database):
         except Exception as e:
             raise DatabaseAccessError(e)
 
-    def __exit__(self,
-                 exception_type, exception_value, exception_traceback):
-        """Method that is called when exiting context."""
-        self.close()
-        return False
-
 
 def test():
     connect_params = dict(host='localhost', port=3306,
