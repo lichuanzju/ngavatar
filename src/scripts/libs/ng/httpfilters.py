@@ -1,13 +1,14 @@
 """This module defines decorators that filter HTTP requests for request
-handlers"""
+handlers."""
 
 
 from excepts import HttpError
 
 
 def allow_methods(*http_methods):
-    """Filter that checks whether the method of the HTTP request is
-    supported."""
+    """Filter that checks whether the method of the HTTP request is allowed
+    for the decorated handler. http_methods collects names of allowed methods
+    (should be upper case)."""
     def allow_methods_decorator(handler):
         """The real decorator."""
         def allow_methods_wrapper(request, *args):
