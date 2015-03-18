@@ -9,6 +9,7 @@ from excepts import HttpError
 from excepts import FileLocateError
 from excepts import FileReadError
 from excepts import FileWriteError
+import _template_loader
 
 
 class View(object):
@@ -40,11 +41,13 @@ class View(object):
             input_file = open(filepath, open_mode)
             file_content = input_file.read()
         except IOError as e:
+            # Raise different error according to error number of IOError
             if e.errno == errno.ENOENT:
                 raise FileLocateError(filepath)
             else:
                 raise FileReadError(filepath)
         finally:
+            # Close file
             if input_file:
                 input_file.close()
 
@@ -121,10 +124,10 @@ class BinaryDataView(View):
 
 
 class TemplateFormatError(HttpError):
-    """Error that is raised when format of a template is illegal."""
+    """Error that is raised when a template contains illegal format."""
 
     def __init__(self, template_filepath, reason=None):
-        """Create template format error with path to the file."""
+        """Create template format error with path to the file and reason."""
         HttpError.__init__(self, 500)
         self.template_filepath = template_filepath
         self.reason = str(reason)
@@ -136,7 +139,7 @@ class TemplateFormatError(HttpError):
 
 
 class TemplateView(View):
-    """View that displays html loaded from a template."""
+    """View that displays html page loaded from a template."""
 
     def __init__(self, template_filepath, template_arguments):
         """Create template view with path to template file
@@ -147,10 +150,8 @@ class TemplateView(View):
 
     def _render_body(self):
         """Render the body of this view with template file and arguments."""
-        # Load template
-        import _template_loader
-
         try:
+            # Load template with template file and arguments
             html_string = _template_loader.load_template(
                 self.filepath,
                 self.template_arguments
