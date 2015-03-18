@@ -9,11 +9,27 @@ import config
 import _sessionhelper
 
 
+def signin_response(request, conf):
+    """Generate response that shows sign in page."""
+    # Get username from the request query string
+    username = request.field_storage.getvalue('username', '')
+
+    template_args = dict(
+        site_name=conf.get('name', ''),
+        username=username
+    )
+
+    signin_view = TemplateView(
+        config.template_filepath('signin.html'),
+        template_args
+    )
+
+    return HttpResponse(signin_view)
+
+
 @httpfilters.allow_methods('GET')
 def handler(request, conf):
     """The handler function."""
-    cookie = None
-
     with MySQLDatabase(conf.get('database_connection')) as db:
         # Get session from database
         session = _sessionhelper.get_session(request, db)
@@ -27,21 +43,10 @@ def handler(request, conf):
                     '/',
                     request.server_name
                 )
+                response = signin_response(request, conf)
+                response.set_cookie(cookie)
+                return response
             else:
                 return HttpRedirectResponse('/user/main')
 
-    username = request.field_storage.getvalue('username', '')
-
-    template_args = dict(
-        site_name=conf.get('name', ''),
-        username=username
-    )
-
-    signin_view = TemplateView(
-        config.template_filepath('signin.html'),
-        template_args
-    )
-
-    response = HttpResponse(signin_view)
-    response.set_cookie(cookie)
-    return response
+    return signin_response(request, conf)
