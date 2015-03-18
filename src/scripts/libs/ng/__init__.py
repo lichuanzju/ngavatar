@@ -1,1 +1,1 @@
-# -*- coding:utf-8 -*-
+"""This package defines classes used by ngavatar site scripts."""
