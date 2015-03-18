@@ -11,7 +11,11 @@ print '<a href="/user/main">', account.get('username'), '</a><br/>'
 print '<a href="/signout">Sign Out</a><br/>'
 %}
 <br/><br/>
-<p><h2>The avatar has been removed from email address {% print email.get('email'), %}</h2></p>
+<p><h2></h2></p>
+<p>
+  <img src="/static/images/successful.png" style="width:30px;height:30px;vertical-align:middle;"/>
+  <font size="+1">The avatar has been removed from email address {% print email.get('email'), %}</font>
+</p>
 </form>
 </body>
 </html>

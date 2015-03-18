@@ -6,7 +6,10 @@
 <body>
 <center><h1>Welcome to {% print site_name, %}!</h1></center>
 <hr/>
-<p><h2>Failed to sign in: {% print error_message, %}</h2></p>
+<p>
+  <img src="/static/images/failed.png" style="width:30px;height:30px;vertical-align:middle;"/>
+  <font size="+1">Failed to sign in: {% print error_message, %}</font>
+</p>
 <a href='./signin'>Try Again</a>
 </body>
 </html>

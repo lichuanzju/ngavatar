@@ -11,7 +11,10 @@ print '<a href="/user/main">', account.get('username'), '</a><br/>'
 print '<a href="/signout">Sign Out</a><br/>'
 %}
 <br/><br/>
-<p><h2>Avatar added successfully</h2></p>
+<p>
+  <img src="/static/images/successful.png" style="width:30px;height:30px;vertical-align:middle;"/>
+  <font size="+1">Avatar added successfully</font>
+</p>
 <img src="./avatar?id={% print avatar.get('aid'), %}" width="64px" />
 </form>
 </body>

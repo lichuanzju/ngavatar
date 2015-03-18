@@ -11,7 +11,10 @@ print '<a href="/user/main">', account.get('username'), '</a><br/>'
 print '<a href="/signout">Sign Out</a><br/>'
 %}
 <br/><br/>
-<p><h2>Failed to add avatar: {% print error_message, %}</h2></p>
+<p>
+  <img src="/static/images/failed.png" style="width:30px;height:30px;vertical-align:middle;"/>
+  <font size="+1">Failed to add avatar: {% print error_message, %}</font>
+</p>
 <a href='./addavatar'>Try Again</a>
 </form>
 </body>
