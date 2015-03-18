@@ -1,6 +1,7 @@
 """This module defines handler that handlers action of adding email."""
 
 
+import re
 from ng import httpfilters
 from ng.database import MySQLDatabase
 from ng.http import HttpResponse, HttpRedirectResponse
@@ -42,6 +43,11 @@ def successful_response(account, email, conf):
     return HttpResponse(successful_view)
 
 
+def check_email_format(email):
+    """Use regular expression to check the format of the email. Return
+    whether the parameter is a legal email address."""
+    return re.match('^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$', email) is not None
+
 @httpfilters.allow_methods('POST')
 def handler(request, conf):
     """The handler function."""
@@ -58,6 +64,14 @@ def handler(request, conf):
             return failed_response(account,
                                    'please input your email address',
                                    conf)
+
+        # Check email format
+        if not check_email_format(email_addr):
+            return failed_response(
+                account,
+                '%s is not a valid email address' % email_addr,
+                conf
+            )
 
         # Check email existance
         if Email.email_exists(db, email_addr):
