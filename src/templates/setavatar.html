@@ -15,17 +15,29 @@ print '<a href="/signout">Sign Out</a><br/>'
 <form action="./setavatar_action" method="post">
 <input type="hidden" name="emid" value="{% print email.get('emid'), %}" />
 {%
+checked = False
 email_aid = email.get('avatar_id')
-if email_aid:
-    print '<input type="radio" name="aid" value="-1" />Remove Avatar<br/><br/>'
 
 for avatar in avatars:
     aid = avatar.get('aid')
     if aid == email_aid:
         continue
 
-    print '<input type="radio" name="aid" value="%d" />' % aid
-    print '<image src="./avatar?id=%d" width="64px"/><br/><br/>' % aid
+    print '<input type="radio" name="aid" value="%d"' % aid,
+    if not checked:
+        print 'checked="checked"',
+        checked = True
+    print '/>',
+        
+    print '<img src="./avatar?id=%d" width="64px" /><br/><br/>' % aid
+
+if email_aid:
+    print '<input type="radio" name="aid" value="-1"',
+
+    if not checked:
+      print 'checked="checked"',
+
+    print '/>Remove avatar from this email<br/><br/>'
 %}
 <input type="submit" value="Set Avatar" />
 </form>
