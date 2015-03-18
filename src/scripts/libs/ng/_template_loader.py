@@ -154,7 +154,7 @@ def test_load():
 
 def test_eval():
     pystr = 'print a'
-    print _eval_py(pystr, {'a':1})
+    print _eval_py(pystr, {'a': 1})
 
 
 if __name__ == '__main__':

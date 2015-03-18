@@ -9,7 +9,8 @@ import uuid
 
 def random_string(size=6, chars=string.ascii_letters + string.digits):
     """Generate a random string with length equal to size. chars specifies
-    the candidate characters. ASCII letters and digits are chosen as default."""
+    the candidate characters. ASCII letters and digits are chosen as
+    default."""
     return ''.join(random.choice(chars) for _ in range(size))
 
 
