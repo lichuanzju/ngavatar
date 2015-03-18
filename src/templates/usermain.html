@@ -23,7 +23,7 @@ for email in emails:
 
     aid = email.get('avatar_id')
     if aid is not None:
-        print '<img src="./avatar?id=%d" width="40px"/>' % aid,
+        print '<img src="./avatar?id=%d" width="40px" style="vertical-align:middle;" />' % aid,
 
     print '<br/></li>'
 %}
