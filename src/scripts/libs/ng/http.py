@@ -32,17 +32,17 @@ def status_description(status_code):
 
 
 def status_header(status_code):
-    """Return the status header of the code."""
+    """Return the HTTP status header of the code."""
     return '%d %s' % (status_code, status_description(status_code))
 
 
 class HttpCookie(object):
-    """Class that represent HTTP cookies."""
+    """Class that represents HTTP cookies."""
 
     @classmethod
     def parse_http_header(cls, header_string):
-        """Parse the 'Cookie' value in HTTP header and create an
-        HttpCookie object."""
+        """Parse the 'Cookie' value in HTTP request header and create an
+        HttpCookie object. None is returned if failed to parse."""
         if not header_string:
             return None
 
@@ -64,7 +64,8 @@ class HttpCookie(object):
     def __init__(self, data, path, expires,
                  domain=None, secure=False, httponly=False):
         """Create a cookie with its attributes. data is a dictionary that
-        contains the data fields."""
+        contains the data fields. path, expires, domain, secure, httponly
+        specifiy the attributes of the cookie."""
         self.data = data
         self.path = path
         self.domain = domain
@@ -73,7 +74,8 @@ class HttpCookie(object):
         self.httponly = httponly
 
     def http_header(self):
-        """Convert this cookie to a http 'Set-Cookie' header.'"""
+        """Convert this cookie to a http 'Set-Cookie' header. Empty string is
+        returned if no data is set to this cookie."""
         if self.data is None:
             return ''
 
@@ -154,10 +156,11 @@ class HttpResponse(object):
     """HTTP response class that stores information of server response."""
 
     def __init__(self, view, **headers):
-        """Create HTTP response with its view."""
+        """Create HTTP response with its view and additional headers."""
         self.view = view
         self.headers = headers
 
+        # Get content type and store it in self.headers
         if 'Content-Type' not in self.headers:
             if self.view is not None:
                 self.headers['Content-Type'] = self.view.content_type
@@ -173,7 +176,7 @@ class HttpResponse(object):
         self.headers[name] = value
 
     def set_cookie(self, cookie):
-        """Add cookie to this response."""
+        """Add a cookie to this response."""
         if cookie is not None:
             self.headers['Set-Cookie'] = cookie.http_header()
 
@@ -183,7 +186,7 @@ class HttpResponse(object):
             del self.headers[header_name]
 
     def _get_header_string(self):
-        """Return the http header of this response."""
+        """Return the HTTP header part of this response(No extra new lines)"""
         # Construct header string
         header_list = []
         for key, value in self.headers.items():
@@ -213,7 +216,7 @@ class HttpResponse(object):
 
 
 class HttpRedirectResponse(HttpResponse):
-    """The HTTP response that redirects the request."""
+    """The HTTP response that redirects the request to another location."""
 
     def __init__(self, redirect_location):
         """Create redirect response with the redirecting location."""
@@ -226,7 +229,7 @@ class HttpErrorResponse(HttpResponse):
     """The HTTP response that indicates an HTTP error."""
 
     def __init__(self, error_code, error_view):
-        """Create error response with error code and path to error page."""
+        """Create error response with error code and view of the error page."""
         HttpResponse.__init__(self,
                               error_view,
                               Status=status_header(error_code))
@@ -291,7 +294,7 @@ class DatabaseSession(HttpSession):
     """Http session implemented with database."""
 
     def __init__(self, db, model):
-        """Create session object."""
+        """Create database session object with database and session model."""
         self.db = db
         self.model = model
 
@@ -299,10 +302,11 @@ class DatabaseSession(HttpSession):
     def create_session(cls, db, data, client_ip, effective_hours):
         """Create a new session in database and return it. None is returned
         if failed."""
-        # Try 3 times
+        # Try 3 different keys
         for trial in range(3):
             session_key = str_generator.unique_id(40)
 
+            # Try to create session instance in database
             session_model = Session.create_session(
                 db,
                 session_key,
