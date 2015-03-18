@@ -54,26 +54,36 @@ def _stdoutIO(out=None):
 
 def _split_template(template_string):
     """Split template content to html parts and python parts."""
+    # Create sequence that stores the result parts of the split
     parts = []
 
+    # Initialize parameters
     length = len(template_string)
     start = 0
     py_start = 0
     py_end = 0
 
+    # Search for split signs until reaches the end
     while start < length:
+        # Find the start sign
         py_start = template_string.find('{%', start)
+        # If not found, add the remaining substring to result and stop
         if py_start < 0:
             parts.append(template_string[start:length])
             break
 
+        # Find the end sign
         py_end = template_string.find('%}', py_start + 2)
+        # If not found, raise split error
         if py_end < 0:
             raise TemplateSplitError('Tags don\'t match')
 
+        # Both start and end signs are found, add html and python parts to
+        # resut
         parts.append(template_string[start:py_start])
         parts.append(template_string[(py_start + 2):py_end].strip())
 
+        # Reset search position
         start = py_end + 2
 
     return parts
@@ -93,6 +103,8 @@ def _eval_template(template_string, template_args):
     """Evaluate template string with specified arguments."""
     parts = _split_template(template_string)
 
+    # Evaluate python parts(parts with odd indexes) and replace it with the
+    # result
     for py_index in range(1, len(parts), 2):
         parts[py_index] = _eval_py(parts[py_index], template_args)
 
@@ -102,6 +114,7 @@ def _eval_template(template_string, template_args):
 def load_template(template_filepath, template_args):
     """Load template file from specified path and
     evaluate it with specified arguments."""
+    # Read content of the template file
     template_file = None
     try:
         template_file = open(template_filepath, 'r')
