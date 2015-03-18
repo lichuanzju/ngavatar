@@ -5,6 +5,7 @@ from ng.models import Account
 from ng.http import HttpResponse, HttpRedirectResponse
 import _sessionhelper
 
+
 def check_signed_in(request, db):
     """Try to extract account signed in from the request. Return Account
     object if successful. Return HttpResonse object if failed."""

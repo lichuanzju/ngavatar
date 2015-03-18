@@ -21,11 +21,13 @@ def http_error_response(error_code, conf):
     response = HttpErrorResponse(error_code, error_view)
     return response
 
+
 def avatar_response(avatar, conf):
     """Generate response that shows the avatar image."""
     avatar_path = config.storage_filepath(avatar.get('file_path'))
     avatar_view = ImageView(avatar_path)
     return HttpResponse(avatar_view)
+
 
 @httpfilters.allow_methods('GET')
 def handler(request, conf):

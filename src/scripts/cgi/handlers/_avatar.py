@@ -1,7 +1,6 @@
 """This module defines the handler that handles avatar image requests."""
 
 
-
 from ng import httpfilters
 from ng.database import MySQLDatabase
 from ng.http import HttpResponse, HttpErrorResponse

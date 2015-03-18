@@ -28,6 +28,7 @@ def failed_response(account, error_message, conf):
 
     return HttpResponse(failed_view)
 
+
 def successful_response(account, avatar, conf):
     """Generate response that shows add avatar successful page."""
     template_args = dict(

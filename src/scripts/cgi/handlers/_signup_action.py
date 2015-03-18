@@ -60,7 +60,7 @@ def handler(request, conf):
         if Account.username_exists(db, username):
             return failed_response(
                 'username %s already exists' % username,
-                 conf
+                conf
             )
 
         # Create account
