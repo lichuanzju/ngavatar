@@ -47,10 +47,10 @@ def handler(request, conf):
     """The handler function."""
     with MySQLDatabase(conf.get('database_connection')) as db:
         # Try to get signed account
-        account_or_response = _accounthelper.check_signed_in(request, db)
-        if isinstance(account_or_response, HttpResponse):
-            return account_or_response
-        account = account_or_response
+        try:
+            account = _accounthelper.get_session_account(request, db)
+        except _accounthelper.InvalidSessionException as e:
+            return e.response
 
         # Check email submitted
         email_addr = request.field_storage.getvalue('email')

@@ -6,15 +6,25 @@ from ng.http import HttpResponse, HttpRedirectResponse
 import _sessionhelper
 
 
-def check_signed_in(request, db):
+class InvalidSessionException(Exception):
+    """Exception that is raised when failed to extract valid account from
+    session."""
+
+    def __init__(self, response):
+        """Create invalid session exception with the HTTP response that
+        should be should be returned."""
+        self.response = response
+
+
+def get_session_account(request, db):
     """Try to extract account signed in from the request. Return Account
-    object if successful. Return HttpResonse object if failed."""
+    object if successful. Raise InvalidSessionException if failed."""
     # Get session from database
     session = _sessionhelper.get_session(request, db)
 
     # Redirect request to sign in page if session doesn't exist
     if session is None:
-        return HttpRedirectResponse('/signin')
+        raise InvalidSessionException(HttpRedirectResponse('/signin'))
 
     # Redirect request to sign in page and expire cookie if session
     # is invalid
@@ -28,7 +38,7 @@ def check_signed_in(request, db):
         )
         response = HttpRedirectResponse('/signin')
         response.set_cookie(cookie)
-        return response
+        raise InvalidSessionException(response)
 
     # Redirect request to sign in page and expire cookie if uid is
     # invalid
@@ -42,6 +52,6 @@ def check_signed_in(request, db):
         )
         response = HttpRedirectResponse('/signin')
         response.set_cookie(cookie)
-        return response
+        raise InvalidSessionException(response)
 
     return account
