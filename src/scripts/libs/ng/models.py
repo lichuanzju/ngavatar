@@ -1,5 +1,6 @@
 """This module defines data models."""
 
+
 import abc
 import datetime
 from excepts import HttpError
@@ -53,7 +54,7 @@ class DatabaseModel(dict):
 
     @classmethod
     def _get_database_query_result(cls, db, **kwargs):
-        """Get query result from database. kwargs contains the
+        """Get query(select *) result from database. kwargs contains the
         attributes to query with."""
         # Create SELECT statement
         sql = 'SELECT * FROM %s' % cls._table_name
@@ -77,7 +78,8 @@ class DatabaseModel(dict):
     @classmethod
     def load_from_database(cls, db, **kwargs):
         """Create an instance with data from database. kwargs contains
-        the attributes to query with."""
+        the attributes to query with. If there are multiple instances, only
+        the first one is returned."""
         # Get query result from database
         query_result = cls._get_database_query_result(db, **kwargs)
 
@@ -120,14 +122,15 @@ class DatabaseModel(dict):
         # End values
         sql += ')'
 
+        # Try to insert it to database
         try:
             return db.execute_sql(sql, args) == 1
         except DatabaseIntegerityError:
             return False
 
     def reload_from_database(self, db, *query_cols):
-        """Reload this instance from database using a query
-        with specified columns. Primary key is used if no columns given"""
+        """Reload this instance from database using a query with specified
+        columns. Primary key is used if no columns given"""
         # Use primary key to query if no column is given
         if not query_cols:
             query_cols.append(self.__class__._primary_key())
@@ -197,7 +200,8 @@ class DatabaseModel(dict):
 
     @classmethod
     def count_in_database(cls, db, **kwargs):
-        """Return number of instances in database."""
+        """Return number of instances in database. kwargs contains conditions
+        to count with."""
         # Create SELECT statement
         sql = 'SELECT COUNT(*) FROM %s' % cls._table_name
         args = []
@@ -219,7 +223,7 @@ class DatabaseModel(dict):
 
 
 class Account(DatabaseModel):
-    """User account model."""
+    """Model that stores information of user accounts."""
 
     _table_name = 'account'
     _cols = [
@@ -301,7 +305,7 @@ class Account(DatabaseModel):
 
 
 class Profile(DatabaseModel):
-    """User profile model."""
+    """Model that stores profile of users."""
 
     _table_name = 'profile'
     _cols = [
@@ -370,7 +374,7 @@ class Profile(DatabaseModel):
 
 
 class Avatar(DatabaseModel):
-    """Avatar model."""
+    """Model that stores information of avatars."""
 
     _table_name = 'avatar'
     _cols = [
@@ -413,7 +417,7 @@ class Avatar(DatabaseModel):
 
 
 class Email(DatabaseModel):
-    """Model that represents email addresses."""
+    """Model that stores information of email addresses."""
 
     _table_name = 'email'
     _cols = [
@@ -531,7 +535,7 @@ class Email(DatabaseModel):
 
 
 class Session(DatabaseModel):
-    """Model that stores the http session data."""
+    """Model that stores data and attributes of HTTP sessions."""
 
     _table_name = 'session'
     _cols = [
