@@ -12,7 +12,7 @@ import _accounthelper
 
 
 def http_error_response(error_code, conf):
-    """Generate response that indicates an http error."""
+    """Generate response that indicates an HTTP error."""
     error_page_path = config.static_filepath(
         conf['error_pages'].get(error_code)
     )
@@ -32,16 +32,19 @@ def avatar_response(avatar, conf):
 @httpfilters.allow_methods('GET')
 def handler(request, conf):
     """The handler function."""
+    # Get email hash
     email_hash = request.field_storage.getvalue('email_hash')
     if not email_hash:
         return http_error_response(404, conf)
     email_hasn = email_hash.lower()
 
     with MySQLDatabase(conf.get('database_connection')) as db:
+        # Load email with the hash from database
         email = Email.load_from_database(db, email_hash=email_hash)
         if email is None or email.get('avatar_id') is None:
             return http_error_response(404, conf)
 
+        # Find the avatar that is set to the email
         aid = email.get('avatar_id')
         avatar = Avatar.load_from_database(db, aid=aid)
         if avatar is None:

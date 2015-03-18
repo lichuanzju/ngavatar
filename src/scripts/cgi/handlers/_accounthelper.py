@@ -26,8 +26,8 @@ def get_session_account(request, db):
     if session is None:
         raise InvalidSessionException(HttpRedirectResponse('/signin'))
 
-    # Redirect request to sign in page and expire cookie if session
-    # is invalid
+    # Redirect request to sign in page and expire cookie if session is
+    # invalid
     uid = session.get_attribute('UID')
     if session.expired() or not uid:
         session.invalidate()
@@ -40,8 +40,7 @@ def get_session_account(request, db):
         response.set_cookie(cookie)
         raise InvalidSessionException(response)
 
-    # Redirect request to sign in page and expire cookie if uid is
-    # invalid
+    # Redirect request to sign in page and expire cookie if uid is invalid
     account = Account.load_from_database(db, uid=uid)
     if account is None:
         session.invalidate()

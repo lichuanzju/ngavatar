@@ -20,7 +20,7 @@ def handler(request, conf):
         # Get session from database
         session = _sessionhelper.get_session(request, db)
 
-        # Remove session from database and generate expiring cookie
+        # Remove session from database and generate session expiring cookie
         if session is not None:
             session.invalidate()
             cookie = _sessionhelper.expire_cookie_for_session(
