@@ -14,7 +14,7 @@ print '<a href="/signout">Sign Out</a><br/>'
 <ul>
 {%
 for email in emails:
-    print '<li>',
+    print '<li style="margin-bottom:1em">',
 
     print email.get('email'),
     print '<button type="button" onclick="location.href=\'/user/setavatar?emid=%d\'">' % email.get('emid'),
@@ -22,9 +22,9 @@ for email in emails:
 
     aid = email.get('avatar_id')
     if aid is not None:
-        print '<img src="./avatar?id=%d" width="64px"/>' % aid,
+        print '<img src="./avatar?id=%d" width="40px"/>' % aid,
 
-    print '</li>'
+    print '<br/></li>'
 %}
 </ul>
 <br/>
