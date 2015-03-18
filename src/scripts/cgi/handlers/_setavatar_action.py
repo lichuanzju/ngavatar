@@ -83,12 +83,12 @@ def handler(request, conf):
             return failed_response(account, 'cannot find email', conf)
 
         # Check avatar id submitted
-        aid = int(request.field_storage.getvalue('aid', 0))
-        if not aid:
+        aid = int(request.field_storage.getvalue('aid', -1))
+        if aid < 0:
             return failed_response(account, 'invalid avatar ID', conf)
 
         # Check whether needed to remove the avatar binding
-        if aid < 0:
+        if aid == 0:
             email['avatar_id'] = None
             if email.update_to_database(db, 'avatar_id'):
                 return remove_avatar_response(account, email, conf)
