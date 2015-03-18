@@ -1,6 +1,6 @@
 """This package provides configuration loading utilities. By importing
 this package, the configuration file will be loaded automatically and
-stored in the package global variable SITE_CONF"""
+stored in the package global variable SITE_CONF."""
 
 
 import os
@@ -33,7 +33,7 @@ def _load_configuration(conf_filepath):
 
 
 def template_filepath(template_filename):
-    """Return the absolute path to a template file."""
+    """Return the absolute path to a template file with specified name."""
     if not template_filename:
         return None
 
@@ -42,7 +42,7 @@ def template_filepath(template_filename):
 
 
 def static_filepath(static_filename):
-    """Return the absolute path to a static file."""
+    """Return the absolute path to a static file with specified name."""
     if not static_filename:
         return None
 
@@ -51,7 +51,7 @@ def static_filepath(static_filename):
 
 
 def storage_filepath(storage_filename):
-    """Return the absolute path to a storage file."""
+    """Return the absolute path to a storage file with specified name."""
     if not storage_filename:
         return None
 
