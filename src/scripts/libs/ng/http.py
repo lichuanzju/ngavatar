@@ -74,7 +74,7 @@ class HttpCookie(object):
         self.httponly = httponly
 
     def http_header(self):
-        """Convert this cookie to a http 'Set-Cookie' header. Empty string is
+        """Convert this cookie to an http 'Set-Cookie' header. Empty string is
         returned if no data is set to this cookie."""
         if self.data is None:
             return ''
@@ -300,8 +300,9 @@ class DatabaseSession(HttpSession):
 
     @classmethod
     def create_session(cls, db, data, client_ip, effective_hours):
-        """Create a new session in database and return it. None is returned
-        if failed."""
+        """Create a new session. client_ip specifies the IP address of the
+        HTTP client. effective_hours specifies effective time in hours.
+        data collects the data to store in the session."""
         # Try 3 different keys
         for trial in range(3):
             session_key = str_generator.unique_id(40)
