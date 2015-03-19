@@ -1,10 +1,7 @@
 # NGAVATAR
 
----
 ## Introduction
 This project is a website designed to provide avatar management services. Users signed in to this website can add email addresses, upload avatars and set avatars for each of their own email addresses. Other websites can get the avatars for email addresses from this site through a public API.
-Author: Li Chuan
-Email: lichuan0502@126.com
 
 ## Installation
 To install this website and make it available on your server, please go through the following instructions.  
@@ -31,6 +28,7 @@ To install this website and make it available on your server, please go through 
 
 ## Cleaning
 To clean the installation of this website, please go through the following steps:
+
 1. Remove all files from the root directory.
 2. Remove ngavatar.pth file from the python `site-packages`(`dist-packages`) directory.
 3. Remove the apache site .conf file from the `sites-enabled` directory and delete port listening statement in the `ports.conf` file.
