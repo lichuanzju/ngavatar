@@ -63,7 +63,7 @@ def handler(request, conf):
                                    conf)
 
         # Get path to the file that should be written in server
-        _, file_extension = os.path.split(avatar_fileitem.filename)
+        _, file_extension = os.path.splitext(avatar_fileitem.filename)
         filename = 'avatars/' + str_generator.unique_id() + file_extension
         filepath = config.storage_filepath(filename)
 
@@ -81,7 +81,7 @@ def handler(request, conf):
             try:
                 os.remove(filepath)
             except OSError as e:
-                raise FileWriteError(filename + 'avatars/')
+                raise FileWriteError(filepath)
 
             return failed_response(account,
                                    'cannot add account',
