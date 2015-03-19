@@ -15,11 +15,13 @@ print '<a href="/signout">Sign Out</a><br/>'
 <ul>
 {%
 for email in emails:
-    print '<li style="margin-bottom:1em">',
+    print '<li style="margin-bottom:1em">%s' % email.get('email'),
 
-    print email.get('email'),
     print '<button type="button" onclick="location.href=\'/user/setavatar?emid=%d\'">' % email.get('emid'),
     print 'Set Avatar</button>',
+
+    print '<button type="button" onclick="location.href=\'/user/delete_email?emid=%d\'">' % email.get('emid'),
+    print 'Delete</button>',
 
     aid = email.get('avatar_id')
     if aid is not None:
@@ -34,7 +36,9 @@ for email in emails:
 <h3>Avatars</h3>
 {%
 for avatar in avatars:
-    print '<img src="./avatar?id=%d" width="64px"/>' % avatar.get('aid'), '&nbsp;&nbsp;'
+    aid = avatar.get('aid')
+    print '<a href="./delete_avatar?aid=%d"><img src="./avatar?id=%d" width="64px" title="Click to delete"/></a>' % (aid, aid),
+    print '&nbsp;&nbsp;'
 %}
 <br/><br/>
 <button type="button" onclick="location.href='./addavatar'">Add Avatar</button><br/>
