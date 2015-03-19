@@ -4,6 +4,19 @@
 <title>{% print account.get('username'), %} - {% print site_name, %}</title>
 </head>
 <body>
+<script type="text/javascript">
+    function delete_email(email, emid) {
+        var result = confirm("Do you really want to delete email " + email + "?")
+        if(result == true)
+            location.href = './deleteemail?emid=' + emid
+    }
+
+    function delete_avatar(aid) {
+        var result = confirm("Do you really want to delete this avatar?")
+        if(result == true)
+            location.href = './deleteavatar?aid=' + aid
+    }
+</script>
 <center><h1>Welcome to {% print site_name, %}!</h1></center>
 <hr/>
 {%
@@ -17,10 +30,10 @@ print '<a href="/signout">Sign Out</a><br/>'
 for email in emails:
     print '<li style="margin-bottom:1em">%s' % email.get('email'),
 
-    print '<button type="button" onclick="location.href=\'/user/setavatar?emid=%d\'">' % email.get('emid'),
+    print '<button type="button" onclick="location.href=\'./setavatar?emid=%d\'">' % email.get('emid'),
     print 'Set Avatar</button>',
 
-    print '<button type="button" onclick="location.href=\'/user/deleteemail?emid=%d\'">' % email.get('emid'),
+    print '<button type="button" onclick="delete_email(\'%s\', %d)\">' % (email.get('email'), email.get('emid')),
     print 'Delete</button>',
 
     aid = email.get('avatar_id')
@@ -37,7 +50,7 @@ for email in emails:
 {%
 for avatar in avatars:
     aid = avatar.get('aid')
-    print '<a href="./deleteavatar?aid=%d"><img src="./avatar?id=%d" width="64px" title="Click to delete"/></a>' % (aid, aid),
+    print '<a href="javascript:delete_avatar(%d)"><img src="./avatar?id=%d" width="64px" title="Click to delete"/></a>' % (aid, aid),
     print '&nbsp;&nbsp;'
 %}
 <br/><br/>
