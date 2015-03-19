@@ -6,13 +6,13 @@ This project is a website designed to provide avatar management services. Users 
 ## Installation
 To install this website and make it available on your server, please go through the following instructions.  
 
-- For automatic installation:
+### For automatic installation:
 1. Login into a Debian like operation system.
 2. Use `apt-get` to install the following packages: `apache2`, `python2.7`, `mysql`, `mysql-dev`, `mysql-python`.
 3. Enable cgid mod for apache server.
 4. Run tools/install.sh with root privileges (**Please be noted that there is no self-cleaning procedure in the script. So you must be careful with the arguments and make sure you can undo the script operations manually.** Use '-h' option to get usage.).
 
-- For manual installation:
+### For manual installation:
 1. Install `apache2`, `python2.7` and `mysql` in your OS.
 2. Install `mysql-python` package for your python2.7.
 3. Enable cgid mod for apache server.
