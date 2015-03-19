@@ -10,7 +10,7 @@ from models import Session
 
 
 def status_description(status_code):
-    """Return description of a specified http status code."""
+    """Return description of a specified HTTP status code."""
     # Use attribute of function to avoid duplicated creation
     if not hasattr(status_description, '_http_status_description'):
         status_description._http_status_description = {
@@ -74,7 +74,7 @@ class HttpCookie(object):
         self.httponly = httponly
 
     def http_header(self):
-        """Convert this cookie to an http 'Set-Cookie' header. Empty string is
+        """Convert this cookie to an HTTP 'Set-Cookie' header. Empty string is
         returned if no data is set to this cookie."""
         if self.data is None:
             return ''
@@ -104,7 +104,7 @@ class HttpCookie(object):
         if self.secure:
             parts.append('Secure')
 
-        # Add http only flag
+        # Add HTTP only flag
         if self.httponly:
             parts.append('HttpOnly')
 
@@ -236,7 +236,7 @@ class HttpErrorResponse(HttpResponse):
 
 
 class HttpSession(object):
-    """Abstract class that defines API of http session."""
+    """Abstract class that defines API of HTTP session."""
 
     __metaclass__ = abc.ABCMeta
 
