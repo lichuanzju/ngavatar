@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class Hierarchy</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="ng-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th bgcolor="#70b0f0" class="navbar-select"
+          >&nbsp;&nbsp;&nbsp;Trees&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >ng</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">&nbsp;</td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="class-tree.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<center><b>
+ [ <a href="module-tree.html">Module Hierarchy</a>
+ | <a href="class-tree.html">Class Hierarchy</a> ]
+</b></center><br />
+<h1 class="epydoc">Class Hierarchy</h1>
+<ul class="nomargin-top">
+    <li> <strong class="uidlink">object</strong>:
+      <em class="summary">The most base type</em>
+    <ul>
+    <li> <strong class="uidlink">exceptions.BaseException</strong>:
+      <em class="summary">Common base class for all exceptions</em>
+    <ul>
+    <li> <strong class="uidlink">exceptions.Exception</strong>:
+      <em class="summary">Common base class for all non-exit exceptions.</em>
+    <ul>
+    <li> <strong class="uidlink">exceptions.StandardError</strong>:
+      <em class="summary">Base class for all standard Python exceptions that do not represent
+        interpreter exiting.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="ng.excepts.NGError-class.html">ng.excepts.NGError</a></strong>:
+      <em class="summary">Base class for exceptions in this package.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="ng.database.DatabaseIntegerityError-class.html">ng.database.DatabaseIntegerityError</a></strong>:
+      <em class="summary">Error that is raised when failed to execute operations in Database 
+        because of data integerity constraints such as UNIQUE keys.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="ng.excepts.HttpError-class.html">ng.excepts.HttpError</a></strong>:
+      <em class="summary">Error that is raised when an HTTP error code is required to send.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="ng.database.DatabaseAccessError-class.html">ng.database.DatabaseAccessError</a></strong>:
+      <em class="summary">Error that is raised when failed to access database.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="ng.excepts.FileLocateError-class.html">ng.excepts.FileLocateError</a></strong>:
+      <em class="summary">Error that is raised when failed to locate a file.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="ng.excepts.FileReadError-class.html">ng.excepts.FileReadError</a></strong>:
+      <em class="summary">Error that is raised when failed to read a file.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="ng.excepts.FileWriteError-class.html">ng.excepts.FileWriteError</a></strong>:
+      <em class="summary">Error that is raised when failed to write a file.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="ng.models.ModelError-class.html">ng.models.ModelError</a></strong>:
+      <em class="summary">Error that is raised when failed to process models.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="ng.views.TemplateFormatError-class.html">ng.views.TemplateFormatError</a></strong>:
+      <em class="summary">Error that is raised when a template contains illegal format.</em>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="ng._template_loader.TemplateEvalError-class.html">ng._template_loader.TemplateEvalError</a></strong>:
+      <em class="summary">Error that is raised when unable to evaluate template string.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="ng._template_loader.TemplateSplitError-class.html">ng._template_loader.TemplateSplitError</a></strong>:
+      <em class="summary">Error that is raised when unable to split template string.</em>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="ng.database.Database-class.html">ng.database.Database</a></strong>:
+      <em class="summary">Abstract class that defines the API of databases.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="ng.database.MySQLDatabase-class.html">ng.database.MySQLDatabase</a></strong>:
+      <em class="summary">Database that connects to MySQL.</em>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="ng.http.HttpCookie-class.html">ng.http.HttpCookie</a></strong>:
+      <em class="summary">Class that represents HTTP cookies.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="ng.http.HttpRequest-class.html">ng.http.HttpRequest</a></strong>:
+      <em class="summary">HTTP request class that stores information of the client request.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="ng.http.HttpResponse-class.html">ng.http.HttpResponse</a></strong>:
+      <em class="summary">HTTP response class that stores information of server response.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="ng.http.HttpErrorResponse-class.html">ng.http.HttpErrorResponse</a></strong>:
+      <em class="summary">The HTTP response that indicates an HTTP error.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="ng.http.HttpRedirectResponse-class.html">ng.http.HttpRedirectResponse</a></strong>:
+      <em class="summary">The HTTP response that redirects the request to another location.</em>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="ng.http.HttpSession-class.html">ng.http.HttpSession</a></strong>:
+      <em class="summary">Abstract class that defines API of HTTP session.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="ng.http.DatabaseSession-class.html">ng.http.DatabaseSession</a></strong>:
+      <em class="summary">Http session implemented with database.</em>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="ng.views.View-class.html">ng.views.View</a></strong>:
+      <em class="summary">Empty view.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="ng.views.BinaryDataView-class.html">ng.views.BinaryDataView</a></strong>:
+      <em class="summary">View that send a binary file to client.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="ng.views.ImageView-class.html">ng.views.ImageView</a></strong>:
+      <em class="summary">View that displays an image.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="ng.views.StaticView-class.html">ng.views.StaticView</a></strong>:
+      <em class="summary">View that displays the content of a static html file.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="ng.views.TemplateView-class.html">ng.views.TemplateView</a></strong>:
+      <em class="summary">View that displays html page loaded from a template.</em>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink">dict</strong>:
+      <em class="summary">dict() -&gt; new empty dictionary
+dict(mapping) -&gt; new dictionary initialized from a mapping object's
+    (key, value) pairs
+dict(iterable) -&gt; new dictionary initialized as if via:
+    d = {}
+    for k, v in iterable:
+        d[k] = v
+dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
+    in the keyword argument list.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="ng.models.DatabaseModel-class.html">ng.models.DatabaseModel</a></strong>:
+      <em class="summary">Abstract class that defines models stored in database.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="ng.models.Account-class.html">ng.models.Account</a></strong>:
+      <em class="summary">Model that stores information of user accounts.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="ng.models.Avatar-class.html">ng.models.Avatar</a></strong>:
+      <em class="summary">Model that stores information of avatars.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="ng.models.Email-class.html">ng.models.Email</a></strong>:
+      <em class="summary">Model that stores information of email addresses.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="ng.models.Session-class.html">ng.models.Session</a></strong>:
+      <em class="summary">Model that stores data and attributes of HTTP sessions.</em>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink">type</strong>:
+      <em class="summary">type(object) -&gt; the object's type type(name, bases, dict) -&gt; 
+        a new type</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="abc.ABCMeta-class.html">abc.ABCMeta</a></strong>:
+      <em class="summary">Metaclass for defining Abstract Base Classes (ABCs).</em>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+</ul>
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="ng-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th bgcolor="#70b0f0" class="navbar-select"
+          >&nbsp;&nbsp;&nbsp;Trees&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >ng</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Thu Mar 19 12:45:41 2015
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

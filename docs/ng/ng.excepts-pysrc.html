@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>ng.excepts</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="ng-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >ng</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="ng-module.html">Package&nbsp;ng</a> ::
+        Module&nbsp;excepts
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="ng.excepts-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="ng.excepts-module.html">Module ng.excepts</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-docstring">"""This module defines exceptions that may be raised in this package."""</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"> </tt>
+<a name="NGError"></a><div id="NGError-def"><a name="L4"></a><tt class="py-lineno"> 4</tt> <a class="py-toggle" href="#" id="NGError-toggle" onclick="return toggle('NGError');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="ng.excepts.NGError-class.html">NGError</a><tt class="py-op">(</tt><tt class="py-base-class">StandardError</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="NGError-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="NGError-expanded"><a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line">    <tt class="py-docstring">"""Base class for exceptions in this package."""</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"> </tt>
+<a name="HttpError"></a><div id="HttpError-def"><a name="L9"></a><tt class="py-lineno"> 9</tt> <a class="py-toggle" href="#" id="HttpError-toggle" onclick="return toggle('HttpError');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="ng.excepts.HttpError-class.html">HttpError</a><tt class="py-op">(</tt><tt class="py-base-class">NGError</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="HttpError-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="HttpError-expanded"><a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line">    <tt class="py-docstring">"""Error that is raised when an http error code is required to send."""</tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"> </tt>
+<a name="HttpError.__init__"></a><div id="HttpError.__init__-def"><a name="L12"></a><tt class="py-lineno">12</tt> <a class="py-toggle" href="#" id="HttpError.__init__-toggle" onclick="return toggle('HttpError.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="ng.excepts.HttpError-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">error_code</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">extra_headers</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="HttpError.__init__-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="HttpError.__init__-expanded"><a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line">        <tt class="py-docstring">"Create an http error with http error code."</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">error_code</tt> <tt class="py-op">=</tt> <tt class="py-name">error_code</tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">extra_headers</tt> <tt class="py-op">=</tt> <tt class="py-name">extra_headers</tt> </tt>
+</div><a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line"> </tt>
+<a name="HttpError.__str__"></a><div id="HttpError.__str__-def"><a name="L17"></a><tt class="py-lineno">17</tt> <a class="py-toggle" href="#" id="HttpError.__str__-toggle" onclick="return toggle('HttpError.__str__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="ng.excepts.HttpError-class.html#__str__">__str__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="HttpError.__str__-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="HttpError.__str__-expanded"><a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line">        <tt class="py-docstring">"Return description of this error."</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-string">'HTTP error with code %d'</tt> <tt class="py-op">%</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">error_code</tt> </tt>
+</div></div><a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line"> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line"> </tt>
+<a name="FileLocateError"></a><div id="FileLocateError-def"><a name="L22"></a><tt class="py-lineno">22</tt> <a class="py-toggle" href="#" id="FileLocateError-toggle" onclick="return toggle('FileLocateError');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="ng.excepts.FileLocateError-class.html">FileLocateError</a><tt class="py-op">(</tt><tt class="py-base-class">HttpError</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FileLocateError-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="FileLocateError-expanded"><a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">    <tt class="py-docstring">"""Error that is raised when failed to locate a file."""</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line"> </tt>
+<a name="FileLocateError.__init__"></a><div id="FileLocateError.__init__-def"><a name="L25"></a><tt class="py-lineno">25</tt> <a class="py-toggle" href="#" id="FileLocateError.__init__-toggle" onclick="return toggle('FileLocateError.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="ng.excepts.FileLocateError-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">filepath</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FileLocateError.__init__-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="FileLocateError.__init__-expanded"><a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">        <tt class="py-docstring">"""Create file locate error with path to the file."""</tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">        <tt id="link-0" class="py-name" targets="Class ng.excepts.HttpError=ng.excepts.HttpError-class.html"><a title="ng.excepts.HttpError" class="py-name" href="#" onclick="return doclink('link-0', 'HttpError', 'link-0');">HttpError</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Method ng._template_loader.TemplateEvalError.__init__()=ng._template_loader.TemplateEvalError-class.html#__init__,Method ng._template_loader.TemplateSplitError.__init__()=ng._template_loader.TemplateSplitError-class.html#__init__,Method ng.database.DatabaseAccessError.__init__()=ng.database.DatabaseAccessError-class.html#__init__,Method ng.database.DatabaseIntegerityError.__init__()=ng.database.DatabaseIntegerityError-class.html#__init__,Method ng.database.MySQLDatabase.__init__()=ng.database.MySQLDatabase-class.html#__init__,Method ng.excepts.FileLocateError.__init__()=ng.excepts.FileLocateError-class.html#__init__,Method ng.excepts.FileReadError.__init__()=ng.excepts.FileReadError-class.html#__init__,Method ng.excepts.FileWriteError.__init__()=ng.excepts.FileWriteError-class.html#__init__,Method ng.excepts.HttpError.__init__()=ng.excepts.HttpError-class.html#__init__,Method ng.http.DatabaseSession.__init__()=ng.http.DatabaseSession-class.html#__init__,Method ng.http.HttpCookie.__init__()=ng.http.HttpCookie-class.html#__init__,Method ng.http.HttpErrorResponse.__init__()=ng.http.HttpErrorResponse-class.html#__init__,Method ng.http.HttpRedirectResponse.__init__()=ng.http.HttpRedirectResponse-class.html#__init__,Method ng.http.HttpRequest.__init__()=ng.http.HttpRequest-class.html#__init__,Method ng.http.HttpResponse.__init__()=ng.http.HttpResponse-class.html#__init__,Method ng.models.ModelError.__init__()=ng.models.ModelError-class.html#__init__,Method ng.models.Session.__init__()=ng.models.Session-class.html#__init__,Method ng.views.BinaryDataView.__init__()=ng.views.BinaryDataView-class.html#__init__,Method ng.views.ImageView.__init__()=ng.views.ImageView-class.html#__init__,Method ng.views.StaticView.__init__()=ng.views.StaticView-class.html#__init__,Method ng.views.TemplateFormatError.__init__()=ng.views.TemplateFormatError-class.html#__init__,Method ng.views.TemplateView.__init__()=ng.views.TemplateView-class.html#__init__,Method ng.views.View.__init__()=ng.views.View-class.html#__init__"><a title="ng._template_loader.TemplateEvalError.__init__
+ng._template_loader.TemplateSplitError.__init__
+ng.database.DatabaseAccessError.__init__
+ng.database.DatabaseIntegerityError.__init__
+ng.database.MySQLDatabase.__init__
+ng.excepts.FileLocateError.__init__
+ng.excepts.FileReadError.__init__
+ng.excepts.FileWriteError.__init__
+ng.excepts.HttpError.__init__
+ng.http.DatabaseSession.__init__
+ng.http.HttpCookie.__init__
+ng.http.HttpErrorResponse.__init__
+ng.http.HttpRedirectResponse.__init__
+ng.http.HttpRequest.__init__
+ng.http.HttpResponse.__init__
+ng.models.ModelError.__init__
+ng.models.Session.__init__
+ng.views.BinaryDataView.__init__
+ng.views.ImageView.__init__
+ng.views.StaticView.__init__
+ng.views.TemplateFormatError.__init__
+ng.views.TemplateView.__init__
+ng.views.View.__init__" class="py-name" href="#" onclick="return doclink('link-1', '__init__', 'link-1');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-number">404</tt><tt class="py-op">)</tt> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">filepath</tt> <tt class="py-op">=</tt> <tt class="py-name">filepath</tt> </tt>
+</div><a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line"> </tt>
+<a name="FileLocateError.__str__"></a><div id="FileLocateError.__str__-def"><a name="L30"></a><tt class="py-lineno">30</tt> <a class="py-toggle" href="#" id="FileLocateError.__str__-toggle" onclick="return toggle('FileLocateError.__str__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="ng.excepts.FileLocateError-class.html#__str__">__str__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FileLocateError.__str__-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="FileLocateError.__str__-expanded"><a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">        <tt class="py-docstring">"""Return description of this error."""</tt> </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-string">'Failed to locate file "%s"'</tt> <tt class="py-op">%</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">filepath</tt> </tt>
+</div></div><a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line"> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line"> </tt>
+<a name="FileReadError"></a><div id="FileReadError-def"><a name="L35"></a><tt class="py-lineno">35</tt> <a class="py-toggle" href="#" id="FileReadError-toggle" onclick="return toggle('FileReadError');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="ng.excepts.FileReadError-class.html">FileReadError</a><tt class="py-op">(</tt><tt class="py-base-class">HttpError</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FileReadError-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="FileReadError-expanded"><a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">    <tt class="py-docstring">"""Error that is raised when failed to read a file."""</tt> </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line"> </tt>
+<a name="FileReadError.__init__"></a><div id="FileReadError.__init__-def"><a name="L38"></a><tt class="py-lineno">38</tt> <a class="py-toggle" href="#" id="FileReadError.__init__-toggle" onclick="return toggle('FileReadError.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="ng.excepts.FileReadError-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">filepath</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FileReadError.__init__-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="FileReadError.__init__-expanded"><a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line">        <tt class="py-docstring">"""Create file read error with path to the file."""</tt> </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">        <tt id="link-2" class="py-name"><a title="ng.excepts.HttpError" class="py-name" href="#" onclick="return doclink('link-2', 'HttpError', 'link-0');">HttpError</a></tt><tt class="py-op">.</tt><tt id="link-3" class="py-name"><a title="ng._template_loader.TemplateEvalError.__init__
+ng._template_loader.TemplateSplitError.__init__
+ng.database.DatabaseAccessError.__init__
+ng.database.DatabaseIntegerityError.__init__
+ng.database.MySQLDatabase.__init__
+ng.excepts.FileLocateError.__init__
+ng.excepts.FileReadError.__init__
+ng.excepts.FileWriteError.__init__
+ng.excepts.HttpError.__init__
+ng.http.DatabaseSession.__init__
+ng.http.HttpCookie.__init__
+ng.http.HttpErrorResponse.__init__
+ng.http.HttpRedirectResponse.__init__
+ng.http.HttpRequest.__init__
+ng.http.HttpResponse.__init__
+ng.models.ModelError.__init__
+ng.models.Session.__init__
+ng.views.BinaryDataView.__init__
+ng.views.ImageView.__init__
+ng.views.StaticView.__init__
+ng.views.TemplateFormatError.__init__
+ng.views.TemplateView.__init__
+ng.views.View.__init__" class="py-name" href="#" onclick="return doclink('link-3', '__init__', 'link-1');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-number">403</tt><tt class="py-op">)</tt> </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">filepath</tt> <tt class="py-op">=</tt> <tt class="py-name">filepath</tt> </tt>
+</div><a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line"> </tt>
+<a name="FileReadError.__str__"></a><div id="FileReadError.__str__-def"><a name="L43"></a><tt class="py-lineno">43</tt> <a class="py-toggle" href="#" id="FileReadError.__str__-toggle" onclick="return toggle('FileReadError.__str__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="ng.excepts.FileReadError-class.html#__str__">__str__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FileReadError.__str__-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="FileReadError.__str__-expanded"><a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line">        <tt class="py-docstring">"""Return description of this error."""</tt> </tt>
+<a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-string">'Failed to read file "%s"'</tt> <tt class="py-op">%</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">filepath</tt> </tt>
+</div></div><a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line"> </tt>
+<a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line"> </tt>
+<a name="FileWriteError"></a><div id="FileWriteError-def"><a name="L48"></a><tt class="py-lineno">48</tt> <a class="py-toggle" href="#" id="FileWriteError-toggle" onclick="return toggle('FileWriteError');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="ng.excepts.FileWriteError-class.html">FileWriteError</a><tt class="py-op">(</tt><tt class="py-base-class">HttpError</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FileWriteError-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="FileWriteError-expanded"><a name="L49"></a><tt class="py-lineno">49</tt>  <tt class="py-line">    <tt class="py-docstring">"""Error that is raised when failed to write a file."""</tt> </tt>
+<a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line"> </tt>
+<a name="FileWriteError.__init__"></a><div id="FileWriteError.__init__-def"><a name="L51"></a><tt class="py-lineno">51</tt> <a class="py-toggle" href="#" id="FileWriteError.__init__-toggle" onclick="return toggle('FileWriteError.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="ng.excepts.FileWriteError-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">filepath</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FileWriteError.__init__-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="FileWriteError.__init__-expanded"><a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line">        <tt class="py-docstring">"""Create file write error with path to the file."""</tt> </tt>
+<a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line">        <tt id="link-4" class="py-name"><a title="ng.excepts.HttpError" class="py-name" href="#" onclick="return doclink('link-4', 'HttpError', 'link-0');">HttpError</a></tt><tt class="py-op">.</tt><tt id="link-5" class="py-name"><a title="ng._template_loader.TemplateEvalError.__init__
+ng._template_loader.TemplateSplitError.__init__
+ng.database.DatabaseAccessError.__init__
+ng.database.DatabaseIntegerityError.__init__
+ng.database.MySQLDatabase.__init__
+ng.excepts.FileLocateError.__init__
+ng.excepts.FileReadError.__init__
+ng.excepts.FileWriteError.__init__
+ng.excepts.HttpError.__init__
+ng.http.DatabaseSession.__init__
+ng.http.HttpCookie.__init__
+ng.http.HttpErrorResponse.__init__
+ng.http.HttpRedirectResponse.__init__
+ng.http.HttpRequest.__init__
+ng.http.HttpResponse.__init__
+ng.models.ModelError.__init__
+ng.models.Session.__init__
+ng.views.BinaryDataView.__init__
+ng.views.ImageView.__init__
+ng.views.StaticView.__init__
+ng.views.TemplateFormatError.__init__
+ng.views.TemplateView.__init__
+ng.views.View.__init__" class="py-name" href="#" onclick="return doclink('link-5', '__init__', 'link-1');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-number">500</tt><tt class="py-op">)</tt> </tt>
+<a name="L54"></a><tt class="py-lineno">54</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">filepath</tt> <tt class="py-op">=</tt> <tt class="py-name">filepath</tt> </tt>
+</div><a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line"> </tt>
+<a name="FileWriteError.__str__"></a><div id="FileWriteError.__str__-def"><a name="L56"></a><tt class="py-lineno">56</tt> <a class="py-toggle" href="#" id="FileWriteError.__str__-toggle" onclick="return toggle('FileWriteError.__str__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="ng.excepts.FileWriteError-class.html#__str__">__str__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FileWriteError.__str__-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="FileWriteError.__str__-expanded"><a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line">        <tt class="py-docstring">"""Return description of this error."""</tt> </tt>
+<a name="L58"></a><tt class="py-lineno">58</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-string">'Failed to write file "%s"'</tt> <tt class="py-op">%</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">filepath</tt> </tt>
+</div></div><a name="L59"></a><tt class="py-lineno">59</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="ng-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >ng</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Thu Mar 19 12:05:55 2015
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
