@@ -131,34 +131,3 @@ class MySQLDatabase(Database):
             self.db.close()
         except Exception as e:
             raise DatabaseAccessError(e)
-
-
-def test():
-    connect_params = dict(host='localhost', port=3306,
-                          user='lic', passwd='900124_li', db='test')
-
-    print 'Inserting:'
-    db = MySQLDatabase(connect_params)
-    print db.execute_sql(
-        'insert into test_table values (null, "lic2", "111")'
-    )
-    result = db.get_query_result('select * from test_table')
-    db.close()
-    print result
-
-    print 'Deleting:'
-    with MySQLDatabase(connect_params) as db:
-        print db.execute_sql('delete from test_table where username=%s',
-                             ['lic2'])
-        result = db.get_query_result('select * from test_table')
-        print result
-
-    try:
-        db.close()
-        print 'Database not closed'
-    except:
-        print 'Database closed'
-
-
-if __name__ == '__main__':
-    test()
