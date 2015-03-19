@@ -3,7 +3,7 @@
 # Check whether this script is run as root
 if [ `id -u` != "0" ]
 then
-    echo "Error: Please run this script as root!"
+    echo "Error: root privilege is needed!"
     exit 1
 fi
 
