@@ -44,7 +44,10 @@ def main():
 
         # Call handler to generate response and write the response
         response = handler(request, config.SITE_CONF)
-        response.write_to_output()
+        if response is not None:
+            response.write_to_output()
+        else
+            raise HttpError(500)
     except HttpError as e:
         # Raise 500 error if traceback enabled
         if traceback_enabled and e.error_code == 500:
