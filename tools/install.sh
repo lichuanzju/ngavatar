@@ -56,12 +56,12 @@ done
 if [ "$interactive" -eq 1 ]
 then
     echo "Please input the following parameters:"
-    read -p "Root directory of the site: " root_dir
-    read -p "Listening port: " port
-    read -p "Apache2 config file name: " config_file
-    read -p "Host name of MySQL server: " mysql_host
-    read -p "Port of MySQL server: " mysql_port
-    read -p "Root password of MYSQL server: " -s mysql_passwd
+    read -p "Root directory of the site(REQUIRED): " root_dir
+    read -p "Listening port('80'): " port
+    read -p "Apache2 config file name('ngavatar.conf'): " config_file
+    read -p "Host name of MySQL server('localhost'): " mysql_host
+    read -p "Port of MySQL server('3306'): " mysql_port
+    read -p "Root password of MySQL server(EMPTY): " -s mysql_passwd
     echo
 fi
 
