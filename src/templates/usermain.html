@@ -20,7 +20,7 @@ for email in emails:
     print '<button type="button" onclick="location.href=\'/user/setavatar?emid=%d\'">' % email.get('emid'),
     print 'Set Avatar</button>',
 
-    print '<button type="button" onclick="location.href=\'/user/delete_email?emid=%d\'">' % email.get('emid'),
+    print '<button type="button" onclick="location.href=\'/user/deleteemail?emid=%d\'">' % email.get('emid'),
     print 'Delete</button>',
 
     aid = email.get('avatar_id')
@@ -37,7 +37,7 @@ for email in emails:
 {%
 for avatar in avatars:
     aid = avatar.get('aid')
-    print '<a href="./delete_avatar?aid=%d"><img src="./avatar?id=%d" width="64px" title="Click to delete"/></a>' % (aid, aid),
+    print '<a href="./deleteavatar?aid=%d"><img src="./avatar?id=%d" width="64px" title="Click to delete"/></a>' % (aid, aid),
     print '&nbsp;&nbsp;'
 %}
 <br/><br/>
