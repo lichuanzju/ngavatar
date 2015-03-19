@@ -98,6 +98,10 @@ root_dir=`readlink -f $root_dir`
 echo "Copying files to root directory..."
 cp -rp ../src/* $root_dir || exit 3
 
+# Creating pth file
+echo "Creating .pth file in python2.7 dist-packages..."
+echo "$root_dir/scripts/libs" > /usr/local/lib/python2.7/dist-packages/ngavatar.pth
+
 # Initialize database
 echo "Initializing MySQL database..."
 mysql -h $mysql_host -P $mysql_port -u root --password="$mysql_passwd" <../src/scripts/sql/create_database.sql || exit 4
