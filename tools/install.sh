@@ -77,7 +77,9 @@ port=${port:-80}
 config_file=${config_file:-ngavatar.conf}
 mysql_host=${mysql_host:-localhost}
 mysql_port=${mysql_port:-3306}
+
 config_file="/etc/apache2/sites-enabled/$config_file"
+root_dir=`readlink -f $root_dir`
 
 # Verify the root directory
 [ -d "$root_dir" ] || { echo "Error: $root_dir is not a directory.";exit 2; }
