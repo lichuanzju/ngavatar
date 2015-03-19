@@ -56,24 +56,3 @@ class FileWriteError(HttpError):
     def __str__(self):
         """Return description of this error."""
         return 'Failed to write file "%s"' % self.filepath
-
-
-def test_Exceptions():
-    try:
-        raise FileLocateError('/tmp/view')
-    except FileLocateError as e:
-        print e
-
-    try:
-        raise FileReadError('/tmp/template.html')
-    except FileReadError as e:
-        print e
-
-    try:
-        raise FileWriteError('/tmp/template.html')
-    except FileWriteError as e:
-        print e
-
-
-if __name__ == '__main__':
-    test_Exceptions()
