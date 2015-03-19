@@ -94,28 +94,33 @@ root_dir=`readlink -f $root_dir`
 [ "$mysql_port" -eq "$mysql_port" ] 2>/dev/null || { echo "Error: invalid MySQL port number $mysql_port"; exit 2; }
 
 
+root_dir_t=$(echo $root_dir | sed -e 's/\//\\\//g')
+
 # Copy all files to root directory
 echo "Copying files to root directory..."
 cp -rp ../src/* $root_dir || exit 3
 
-# Creating pth file
+# Create .pth file
 echo "Creating .pth file in python2.7 dist-packages..."
-echo "$root_dir/scripts/libs" > /usr/local/lib/python2.7/dist-packages/ngavatar.pth
+echo "$root_dir/scripts/libs" > /usr/local/lib/python2.7/dist-packages/ngavatar.pth || exit 4
+
+# Modify the configutation file
+echo "Customizing configuration file..."
+sed -i -e "s/DOC_ROOT/$root_dir_t/g" -e "s/MYSQL_HOST/$mysql_host/g" -e "s/MYSQL_PORT/$mysql_port/g" $root_dir/scripts/conf/ngavatar.conf || exit 5
 
 # Initialize database
 echo "Initializing MySQL database..."
-mysql -h $mysql_host -P $mysql_port -u root --password="$mysql_passwd" <../src/scripts/sql/create_database.sql || exit 4
+mysql -h $mysql_host -P $mysql_port -u root --password="$mysql_passwd" <../src/scripts/sql/create_database.sql || exit 6
 
 # Create apache2 site config file and add listening port
 echo "Creating apache2 config file..."
-root_dir_t=$(echo $root_dir | sed -e 's/\//\\\//g')
 sed -e "s/DOC_ROOT/$root_dir_t/g" -e "s/SITE_PORT/$port/g" \
-    ngavatar.conf > $config_file || exit 5
+    ngavatar.conf > $config_file || exit 7
 echo "Listen $port" >> /etc/apache2/ports.conf
 
 # Restart apache2 server
 echo "Restarting apache2 server..."
-service apache2 restart || exit 6
+service apache2 restart || exit 8
 
 echo "Done."
 echo "Please visit http://localhost:$port/ to verify."
