@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Email Deleted Successfully - {% print site_name, %}</title>
+</head>
+<body>
+<center><h1>Welcome to {% print site_name, %}!</h1></center>
+<hr/>
+{%
+print '<a href="/user/main">', account.get('username'), '</a><br/>'
+print '<a href="/signout">Sign Out</a><br/>'
+%}
+<br/><br/>
+<p>
+  <img src="/static/images/successful.png" style="width:30px;height:30px;vertical-align:middle;"/>
+  <font size="+1">Email address {% print email.get('email'), %} deleted successfully</font>
+</p>
+</form>
+</body>
+</html>

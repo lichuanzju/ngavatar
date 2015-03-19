@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Failed to Delete Avatar - {% print site_name, %}</title>
+</head>
+<body>
+<center><h1>Welcome to {% print site_name, %}!</h1></center>
+<hr/>
+{%
+print '<a href="/user/main">', account.get('username'), '</a><br/>'
+print '<a href="/signout">Sign Out</a><br/>'
+%}
+<br/><br/>
+<p>
+  <img src="/static/images/failed.png" style="width:30px;height:30px;vertical-align:middle;"/>
+  <font size="+1">Failed to delete the avatar: {% print error_message, %}</font>
+</p>
+</form>
+</body>
+</html>

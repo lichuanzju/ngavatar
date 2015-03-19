@@ -17,6 +17,8 @@ import _avatar
 import _setavatar
 import _setavatar_action
 import _avatar_api
+import _deleteemail
+import _deleteavatar
 
 
 # Handlers table
@@ -36,6 +38,8 @@ _handlers = {
     '/user/setavatar': _setavatar.handler,
     '/user/setavatar_action': _setavatar_action.handler,
     '/avatar': _avatar_api.handler,
+    '/user/deleteemail': _deleteemail.handler,
+    '/user/deleteavatar': _deleteavatar.handler,
 }
 
 
