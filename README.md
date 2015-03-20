@@ -119,7 +119,7 @@ The data flow of this project is as follows:
     ii. Views generate HTTP response body by loading template files and static files;  
 4. The gateway.cgi get the HttpResponse object returned by the handler function and write it to the CGI output.
 
-### Database module
+### Database Module
 Database module defines classes that provide database API.
 
 1. Database class: base class that defines common database operations.
@@ -143,7 +143,7 @@ View classes generate the body of HTTP responses by loading static html files, i
 4. BinaryView: view that generates the body by reading data from binary files.
 5. TemplateView: view that generates the body by loading and evaluating template files.
 
-### HTTP module
+### HTTP Module
 HTTP module defines classes that related to HTTP protocol, including:
 
 1. HttpCookie: class that stores attributes of an HTTP cookie.
@@ -155,10 +155,10 @@ HTTP module defines classes that related to HTTP protocol, including:
 4. HttpSession: class that defines interface of HTTP sessions.
 5. DatabaseSession: session class that uses Session model to implement session interfaces.
 
-### HTTP Request handlers
+### HTTP Request Handlers
 An HTTP request handler is a function that takes an HttpRequest object and returns an HttpResponse object. The handlers use HTTP module to parse requests and construct responses. Data models are used by handlers to load and store data. Views are used by handlers to form response bodies.
 
-### CGI gateway script
+### CGI Gateway Script
 The gateway script is an executable python script that processes all HTTP requests passed by the web server except static file requests. It processes the request through the following steps:
 
 1. Create HttpRequest object from environment variables.
@@ -168,11 +168,11 @@ The gateway script is an executable python script that processes all HTTP reques
 5. Get the HttpResponse object returned by the handler function and write it to output.
 6. If any exceptions raised during the above steps, generate an corresponding HttpErrorResponse object and write it to the output.
 
-### Error handling
+### Error Handling
 There are 2 kinds of exceptions that may be raised in this project: HTTP errors and other errors.
 
 - HTTP errors are errors that raised in purpose to inform the gateway CGI script to generate a response with HTTP error statuses. These errors are caused by unfounded resources, illegal requests and illegal template formats etc.
 - Other errors are errors that raised unexpectedly by certain python code with bugs. If any of these errors are catched by the gateway script, an HTTP 500 error status will be returned to the client.
 
-## Other documents
+## Other Documents
 If you are interested in the detailed implementation of this project, please read the documents in the `docs` directory.
