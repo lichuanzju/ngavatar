@@ -174,5 +174,12 @@ There are 2 kinds of exceptions that may be raised in this project: HTTP errors 
 - HTTP errors are errors that raised in purpose to inform the gateway CGI script to generate a response with HTTP error statuses. These errors are caused by unfounded resources, illegal requests and illegal template formats etc.
 - Other errors are errors that raised unexpectedly by certain python code with bugs. If any of these errors are catched by the gateway script, an HTTP 500 error status will be returned to the client.
 
+## The Avatar Public API
+After setting avatars to email addresses, you can check the availability of the avatar by visiting the following URL:
+```
+http://hostname:port/avatar?email_hash=<EMAIL_SHA1_HASH>
+```
+The `EMAIL_SHA1_HASH` is the hex representation of SHA1 hash(20 bytes) of the email address.
+
 ## Other Documents
 If you are interested in the detailed implementation of this project, please read the documents in the `docs` directory.
