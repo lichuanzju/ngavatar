@@ -46,7 +46,7 @@ def main():
         response = handler(request, config.SITE_CONF)
         if response is not None:
             response.write_to_output()
-        else
+        else:
             raise HttpError(500)
     except HttpError as e:
         # Raise 500 error if traceback enabled
@@ -60,7 +60,7 @@ def main():
         if traceback_enabled:
             raise e
         else:
-            http_eror = HttpError(500)
+            http_error = HttpError(500)
             response = response_from_error(http_error)
             response.write_to_output()
 
